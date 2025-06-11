@@ -834,120 +834,128 @@
             color: var(--group-box-text);
         }
 
-        /* ===== MOBILE UX OVERHAUL - PREDICTABLE LAYOUT & SCROLLING ===== */
+        /* ===== THE DEFINITIVE MOBILE LAYOUT - CLEAN FLEXBOX SOLUTION ===== */
         @media (max-width: 768px) {
             /* iOS Safari Viewport Fix */
             html {
                 height: -webkit-fill-available;
             }
 
-            /* STEP 1: Calculate Fixed Element Heights */
-            /* Disclaimer bar: ~44px, Header: ~80px = Total: 124px */
-            
-            /* FUNDAMENTAL LAYOUT CHANGE: Flexbox + proper spacing for fixed elements */
+            /* THE NEW and ONLY layout for the body on mobile */
             body {
-                min-height: -webkit-fill-available;
                 display: flex;
                 flex-direction: column;
+                height: 100vh; /* Make the body exactly the height of the screen */
                 margin: 0;
-                /* STEP 2: Apply padding-top to account for fixed elements */
-                padding-top: 124px; /* Disclaimer (44px) + Header (80px) */
             }
 
-            /* Ensure disclaimer bar stays at very top */
+            /* Style the fixed header and disclaimer */
+            #disclaimer-bar,
+            .fixed-header {
+                position: relative; /* No longer fixed to the viewport */
+                flex-shrink: 0; /* Prevents these from shrinking */
+                z-index: 10;
+            }
+
+            /* Remove fixed positioning conflicts */
             #disclaimer-bar {
-                position: fixed;
-                top: 0;
-                height: 44px; /* Explicit height for calculation */
-                padding: 8px 16px;
+                position: relative;
+                top: auto;
+                padding: 12px 16px;
                 font-size: 14px;
             }
 
-            /* Position header directly below disclaimer */
             .fixed-header {
-                position: fixed;
-                top: 44px; /* Height of disclaimer bar */
-                height: 80px; /* Explicit height for calculation */
+                position: relative;
+                top: auto;
                 padding: 16px;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border-gray);
             }
 
-            /* When disclaimer is hidden, adjust header position */
-            body.disclaimer-hidden {
-                padding-top: 80px; /* Only header height */
-            }
-
-            body.disclaimer-hidden .fixed-header {
-                top: 0;
-            }
-
-            /* Fixed Header Mobile Styles - Controlled by main fixed positioning */
             body.theme-dark .fixed-header {
-                background: rgba(26, 32, 44, 0.95);
+                background: var(--bg-primary);
             }
 
-            /* Main Content Area - Flexible Growth */
-            .main-container {
-                flex-grow: 1;
-                display: flex;
-                flex-direction: column;
-                overflow: hidden;
-            }
-
-            /* WIZARD CONTAINER - COMPLETE MOBILE REDESIGN */
+            /* This is the container for the main wizard content area */
             #wizard-container {
-                position: relative !important; /* Override fixed positioning */
-                top: auto !important;
-                left: auto !important;
-                transform: none !important;
-                width: 100% !important;
-                /* STEP 3: Account for all fixed elements - header + disclaimer + nav */
-                height: calc(100vh - 194px) !important; /* 124px (top) + 70px (nav) */
-                max-width: none !important;
-                max-height: none !important;
-                min-height: calc(100vh - 194px) !important;
-                display: flex;
-                flex-direction: column;
+                flex-grow: 1; /* This is the key: it grows to fill ALL remaining space */
+                position: relative; /* MUST be relative for the children to be positioned within it */
+                display: grid; /* We use a grid here to easily center the card */
+                place-items: center; /* This centers the card within the available space */
+                overflow: hidden; /* Prevents any weird overflow issues */
             }
 
-            /* Adjust wizard height when disclaimer is hidden */
-            body.disclaimer-hidden #wizard-container {
-                height: calc(100vh - 150px) !important; /* 80px (header) + 70px (nav) */
-                min-height: calc(100vh - 150px) !important;
-            }
-
-            /* WIZARD SECTIONS - MOBILE OPTIMIZED LAYOUT */
+            /* The wizard card itself, now positioned relative to the container */
             #wizard-container > section {
-                position: relative !important; /* Override absolute positioning */
-                top: auto !important;
-                left: auto !important;
-                transform: none !important;
-                width: 100% !important;
-                height: 100% !important;
-                flex-grow: 1;
-                overflow-y: auto;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: stretch;
-                /* iOS-specific scrolling improvements */
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior: contain;
-                /* Ensure content starts at top */
+                position: absolute;
+                /* The card should not be 100% height of the container, but a bit smaller to show padding */
+                width: 90%;
+                height: 90%;
+                max-width: 500px;
+                max-height: 600px;
+                /* The card flip animation and active state rules stay the same */
+                background: var(--bg-primary);
+                border-radius: 16px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                padding: 24px;
                 box-sizing: border-box;
+                overflow-y: auto;
+                overflow-x: hidden;
+                /* Keep existing transform animations */
+                transform: rotateY(-90deg);
+                transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
-            /* Ensure only active section is visible */
-            #wizard-container > section:not(.active-step) {
-                display: none !important;
+            #wizard-container > section.active {
+                transform: rotateY(0deg);
             }
 
             #wizard-container > section.active-step {
-                display: flex !important;
-                opacity: 1;
-                visibility: visible;
-                pointer-events: auto;
-                transform: none !important;
+                transform: rotateY(0deg);
+            }
+
+            /* Mobile Typography - Optimized for smaller screens */
+            #wizard-container h1 {
+                font-size: 24px;
+                margin-bottom: 16px;
+                line-height: 1.2;
+            }
+
+            #wizard-container h2 {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+            #wizard-container h3 {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+
+            #wizard-container p,
+            #wizard-container li {
+                font-size: 14px;
+                line-height: 1.4;
+                margin-bottom: 12px;
+            }
+
+            #wizard-container .group-box {
+                padding: 12px;
+                margin: 12px 0;
+                border-radius: 8px;
+            }
+
+            #wizard-container .group-box h3 {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            /* Mobile Button Styles */
+            .wizard-nav-button {
+                min-height: 44px; /* iOS touch target requirement */
+                font-size: 16px;
+                padding: 12px 20px;
+                border-radius: 8px;
             }
 
             /* TASK 2: ADAPTIVE TYPOGRAPHY & SPACING - MOBILE-FIRST HIERARCHY */
@@ -1059,20 +1067,19 @@
                 font-size: var(--text-xs);
             }
 
-            /* Navigation Bar - Mobile Fixed Bottom */
+            /* Navigation Bar - Clean positioning */
             .wizard-navigation {
-                position: fixed !important;
-                bottom: 0 !important;
-                left: 0;
-                right: 0;
-                padding: 16px 12px;
+                position: relative;
+                flex-shrink: 0; /* Prevents navigation from shrinking */
+                width: 100%;
+                padding: 16px;
                 background: var(--bg-primary);
                 border-top: 1px solid var(--border-gray);
-                z-index: 100;
             }
 
             body.theme-dark .wizard-navigation {
                 background: var(--bg-primary);
+                border-top: 1px solid var(--border-gray);
             }
 
             /* Height rules are handled in main wizard container section above */
@@ -1199,36 +1206,21 @@
             }
         }
 
-        /* ===== iOS SPECIFIC FIXES - ADDITIONAL VIEWPORT SUPPORT ===== */
+        /* Small Device Adjustments */
         @media (max-width: 480px) {
-            /* Extra small devices - more conservative sizing */
-            #wizard-container {
-                width: 95vw !important;
-                height: 500px !important;
-                max-height: calc(100vh - 100px) !important;
-                min-height: 350px !important;
-            }
-
             #wizard-container > section {
+                width: 95%;
+                height: 85%;
                 padding: 16px;
-                max-height: calc(500px - 32px);
-                justify-content: flex-start !important;
-                align-items: stretch !important;
             }
 
-            .content-section {
-                padding: 16px;
-                margin: 8px;
+            #wizard-container h1 {
+                font-size: 22px;
             }
 
-            .hero-title {
-                font-size: var(--text-2xl);
-                margin-bottom: 12px;
-            }
-
-            .content-section h2 {
-                font-size: var(--text-xl);
-                margin-bottom: 12px;
+            #wizard-container p,
+            #wizard-container li {
+                font-size: 13px;
             }
         }
 
