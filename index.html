@@ -844,22 +844,21 @@
             /* STEP 1: Calculate Fixed Element Heights */
             /* Disclaimer bar: ~44px, Header: ~80px = Total: 124px */
             
-            /* Step 1: The <body> as the Master Flex Container */
+            /* Step 1: The <body> Flexbox Container (The Foundation) */
             body {
                 display: flex;
                 flex-direction: column;
-                /* This is crucial: Make the body exactly the height of the visible screen */
-                height: 100vh;
+                height: 100vh; /* Make the body exactly the height of the screen */
                 margin: 0;
-                /* This prevents the entire page from having its own scrollbar, which can cause issues */
-                overflow: hidden;
+                overflow: hidden; /* Prevents the whole page from "bouncing" */
             }
 
-            /* Step 3: The Header and Footer */
-            #disclaimer-bar,
-            .fixed-header {
-                flex-shrink: 0; /* This command is vital: it prevents these elements from shrinking */
-                position: relative; /* Ensure they are part of the flex flow, not fixed to the viewport */
+            /* Step 2: The Header and Footer (The Fixed Elements) */
+            #disclaimer-bar, /* The wrapper for your header/disclaimer */
+            .fixed-header,
+            .wizard-navigation {  /* The bar with 'Prev' and 'Next' buttons */
+                flex-shrink: 0;
+                position: relative; /* Must be part of the flex flow */
             }
 
             #disclaimer-bar {
@@ -875,36 +874,45 @@
                 background: var(--bg-primary);
             }
 
-            /* Step 2: The Content Area (#wizard-container) as the Flexible Child */
+            /* Step 3: The Wizard Container (The Flexible Content Area) */
             #wizard-container {
-                flex-grow: 1; /* THE KEY: This forces the container to expand and fill the remaining vertical space */
-                position: relative; /* It must be 'relative' to be part of the flex flow, NOT 'fixed' or 'absolute' */
-                display: grid;
-                place-items: center;
-                overflow: hidden; /* Prevent the container itself from having weird scrollbars */
+                flex-grow: 1; /* This is the key: it expands to fill all available space */
+                position: relative; /* CRITICAL: This makes it the positioning parent for the slides */
+                overflow: hidden;
             }
 
-            /* Step 3: The Fixed-Size Individual Slides (<section>) */
+            /* Step 4: The Individual Wizard Slides (The Final, Correct Implementation) */
             #wizard-container > section {
-                position: absolute; /* Positioned relative to the now-correctly-sized #wizard-container */
-                width: 90%;
-                height: 90%;
-                max-width: 500px;
-                max-height: 90%;
-                overflow-y: auto; /* Allow internal scrolling if content is long */
-                
-                /* All other styles like animation transitions, etc., remain */
-                background: var(--bg-primary);
-                border-radius: 16px;
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-                padding: 24px;
+                /* This forces all slides to stack in the exact same spot */
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+
+                /* This handles the internal scrolling for long content */
+                overflow-y: auto;
+                padding: 24px; /* Give content some breathing room */
                 box-sizing: border-box;
-                transform: rotateY(-90deg);
-                transition: transform 0.6s ease-in-out;
+
+                /* This is the visibility and animation logic from our desktop version */
+                opacity: 0;
+                visibility: hidden;
+                transform: rotateY(-90deg); /* Or whatever your desired animation is */
+                transition: transform 0.6s ease, opacity 0.6s ease;
+                backface-visibility: hidden;
+
+                /* Mobile styling */
+                background: var(--bg-primary);
+                border-radius: 0; /* Full screen on mobile */
             }
 
+            /* And finally, the rule to make the one active slide visible */
             #wizard-container > section.active-step {
+                opacity: 1;
+                visibility: visible;
                 transform: rotateY(0deg);
+                z-index: 10;
             }
 
             /* Ensure scroll position resets happen at the slide level */
@@ -1087,10 +1095,8 @@
                 font-size: var(--text-xs);
             }
 
-            /* Navigation Bar - Part of Flex Flow */
+            /* Navigation Bar Styling */
             .wizard-navigation {
-                flex-shrink: 0; /* This command is vital: it prevents these elements from shrinking */
-                position: relative; /* Ensure they are part of the flex flow, not fixed to the viewport */
                 padding: 16px 12px;
                 background: var(--bg-primary);
                 border-top: 1px solid var(--border-gray);
