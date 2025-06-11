@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Ageint Security DMSS Tutorial - Mobile</title>
+    <title>Ageint Security DMSS Tutorial</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
     <style>
-        /* ===== EXTRACTED CSS VARIABLES FROM DESKTOP VERSION ===== */
+        /* ===== CORE PHILOSOPHY: 8-POINT GRID SYSTEM & PREMIUM DESIGN ===== */
         :root {
             /* 8-Point Grid System */
             --space-xs: 8px;
@@ -100,284 +104,212 @@
             --accent-text-color: #1a1a1a;
         }
 
-        /* ===== MOBILE-FIRST ARCHITECTURE: THE MANDATORY FLEXBOX STRUCTURE ===== */
-        
-        /* A) The <body> Flexbox Container */
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh; /* Make the body exactly the height of the screen */
+        /* ===== GLOBAL RESET & BASE STYLES ===== */
+        * {
             margin: 0;
-            overflow: hidden; /* Prevents buggy "bounce-back" scrolling on the page itself */
-            
-            /* Base styling */
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--bg-primary);
+            min-height: 100vh;
             transition: background-color var(--transition-base), color var(--transition-base);
+            margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body.scroll-lock {
             overflow: hidden;
         }
 
-        /* B) The Header & Footer Elements */
-        #mobile-header-container,
-        #wizard-navigation-bar {
-            flex-shrink: 0; /* Prevents these elements from shrinking */
-        }
-
-        /* C) The Main Wizard Container (The Flexible Core) */
-        #wizard-container {
-            flex-grow: 1; /* This forces the container to expand and fill the remaining vertical space */
-            position: relative; /* It must be part of the flex flow */
-            display: grid;
-            place-items: center; /* This centers the card within the now-correctly-sized space */
-            overflow: hidden;
-        }
-
-        /* D) The Individual Wizard Slides */
-        #wizard-container > section {
-            position: absolute;
-            width: 90%; /* Make the card slightly smaller than the container */
-            height: 95%; /* Use a high percentage to maximize vertical space */
-            overflow-y: auto; /* This enables smooth scrolling INSIDE the card if content is long */
-            padding: 24px;
-            
-            /* Visibility and styling */
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(100%);
-            transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
-            
-            /* Card styling */
-            background: var(--bg-primary);
-            border-radius: var(--border-radius-xl);
-            box-shadow: var(--shadow-medium);
-            border: 1px solid var(--border-gray);
-        }
-
-        #wizard-container > section.active-step {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(0);
-        }
-
-        /* ===== MOBILE HEADER STYLING ===== */
-        #mobile-header-container {
-            background: var(--bg-primary);
-            border-bottom: 1px solid var(--border-gray);
-            padding: var(--space-md) var(--space-lg);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 60px;
-        }
-
-        .mobile-header-logo {
-            font-size: var(--text-xl);
-            font-weight: 700;
-            color: var(--accent-color);
-            text-decoration: none;
-        }
-
-        .mobile-header-brand {
-            font-size: var(--text-sm);
-            color: var(--text-secondary);
-        }
-
-        /* ===== DISCLAIMER BAR STYLING ===== */
-        #disclaimer-bar {
-            background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 90%, black) 100%);
-            color: var(--accent-text-color);
-            padding: var(--space-md) var(--space-lg);
+        /* ===== PASSWORD GATE STYLING ===== */
+        #password-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            z-index: calc(var(--z-welcome) + 100);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: var(--space-md);
-            font-size: var(--text-sm);
-            font-weight: 500;
-            box-shadow: var(--shadow-medium);
-            transform: translateY(0);
-            transition: transform var(--transition-base), opacity var(--transition-base);
+            opacity: 1;
+            visibility: visible;
+            transition: opacity var(--transition-slow), visibility var(--transition-slow);
         }
 
-        #disclaimer-bar.is-hidden {
-            transform: translateY(-100%);
+        #password-gate.is-hidden {
             opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
 
-        .disclaimer-text {
-            text-align: center;
-            line-height: 1.4;
-            flex: 1;
-        }
-
-        .disclaimer-close {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: inherit;
-            width: 32px;
-            height: 32px;
-            border-radius: var(--border-radius-full);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: var(--text-lg);
-            flex-shrink: 0;
-            transition: background var(--transition-base);
-        }
-
-        .disclaimer-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* ===== NAVIGATION BAR STYLING ===== */
-        #wizard-navigation-bar {
+        .password-content {
             background: var(--bg-primary);
-            border-top: 1px solid var(--border-gray);
-            padding: var(--space-lg);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: var(--space-md);
-            min-height: 80px;
+            border-radius: var(--border-radius-2xl);
+            padding: var(--space-6xl) var(--space-5xl);
+            box-shadow: var(--shadow-strong);
+            text-align: center;
+            max-width: 480px;
+            width: 95%;
+            border: 1px solid var(--border-gray);
+            transform: scale(0.9);
+            animation: passwordEntrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
 
-        .nav-btn {
+        @keyframes passwordEntrance {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .lock-icon {
+            color: var(--accent-color);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .password-title {
+            font-size: var(--text-4xl);
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: var(--space-md);
+            line-height: 1.2;
+        }
+
+        .password-subtitle {
+            font-size: var(--text-lg);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-4xl);
+            line-height: 1.5;
+        }
+
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: var(--space-lg) var(--space-xl);
+            font-size: var(--text-lg);
+            font-weight: 500;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-gray);
+            border-radius: var(--border-radius-lg);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            outline: none;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .password-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.1);
+            background: var(--bg-primary);
+        }
+
+        .password-input::placeholder {
+            color: var(--text-secondary);
+            letter-spacing: normal;
+        }
+
+        .password-submit {
+            padding: var(--space-lg) var(--space-2xl);
+            font-size: var(--text-lg);
+            font-weight: 700;
             background: var(--accent-color);
             color: var(--accent-text-color);
             border: none;
             border-radius: var(--border-radius-lg);
-            padding: var(--space-md) var(--space-xl);
-            font-size: var(--text-base);
-            font-weight: 600;
             cursor: pointer;
             transition: var(--transition-base);
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
-            min-height: 48px;
-            min-width: 80px;
             justify-content: center;
+            gap: var(--space-sm);
+            position: relative;
+            overflow: hidden;
         }
 
-        .nav-btn:hover:not(:disabled) {
+        .password-submit:hover {
             background: var(--accent-dark);
             transform: translateY(-2px);
             box-shadow: var(--shadow-medium);
         }
 
-        .nav-btn:disabled {
-            background: var(--border-gray);
-            color: var(--text-secondary);
+        .password-submit:active {
+            transform: translateY(0);
+        }
+
+        .password-submit:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        .progress-indicator {
-            flex: 1;
-            text-align: center;
-            font-size: var(--text-base);
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        /* ===== CONTENT STYLING ===== */
-        #wizard-container h1 {
-            font-size: var(--text-3xl);
-            font-weight: 900;
-            color: var(--accent-color);
-            margin-bottom: var(--space-lg);
-            line-height: 1.2;
-        }
-
-        #wizard-container h2 {
-            font-size: var(--text-2xl);
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: var(--space-md);
-        }
-
-        #wizard-container h3 {
-            font-size: var(--text-xl);
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: var(--space-sm);
-        }
-
-        #wizard-container p,
-        #wizard-container li {
-            font-size: var(--text-base);
-            line-height: 1.6;
-            margin-bottom: var(--space-md);
-            color: var(--text-primary);
-        }
-
-        #wizard-container ul,
-        #wizard-container ol {
-            margin-left: var(--space-lg);
-            margin-bottom: var(--space-md);
-        }
-
-        #wizard-container li {
-            margin-bottom: var(--space-sm);
-        }
-
-        /* Group Box Styling */
-        .group-box,
-        .info-box,
-        .note-block {
-            background: var(--group-box-bg);
-            color: var(--group-box-text);
-            border-radius: var(--border-radius-lg);
-            padding: var(--space-lg);
-            margin: var(--space-lg) 0;
-            border: 1px solid var(--border-gray);
-        }
-
-        .group-box h3 {
-            color: var(--group-box-text);
-            margin-bottom: var(--space-sm);
-        }
-
-        /* Code elements */
-        code {
-            background: var(--bg-secondary);
-            padding: var(--space-xs);
-            border-radius: var(--border-radius);
-            font-family: 'Courier New', monospace;
+        .password-error {
+            color: #E53E3E;
             font-size: var(--text-sm);
-        }
-
-        .placeholder-text {
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        .important-text {
-            color: var(--accent-color);
             font-weight: 600;
-        }
-
-        /* Contact info styling */
-        .contact-info {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity var(--transition-base), visibility var(--transition-base), transform var(--transition-base);
             text-align: center;
-            margin-top: var(--space-xl);
+            background: rgba(229, 62, 62, 0.1);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(229, 62, 62, 0.2);
         }
 
-        .contact-info a {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 600;
+        .password-error.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
-        /* ===== WELCOME MODAL STYLING ===== */
+        /* Loading state for submit button */
+        .password-submit.loading {
+            pointer-events: none;
+        }
+
+        .password-submit.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== WELCOME EXPERIENCE STYLING ===== */
         #welcome-modal {
             position: fixed;
             top: 0;
@@ -392,7 +324,6 @@
             opacity: 1;
             visibility: visible;
             transition: opacity var(--transition-slow), visibility var(--transition-slow);
-            padding: var(--space-lg);
         }
 
         #welcome-modal.is-hidden {
@@ -403,16 +334,14 @@
         .welcome-content {
             background: var(--bg-primary);
             border-radius: var(--border-radius-2xl);
-            padding: var(--space-4xl) var(--space-2xl);
+            padding: var(--space-6xl) var(--space-5xl);
             box-shadow: var(--shadow-strong);
             text-align: center;
-            max-width: 480px;
-            width: 100%;
+            max-width: 600px;
+            width: 95%;
             border: 1px solid var(--border-gray);
             transform: scale(0.9);
             animation: welcomeEntrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         @keyframes welcomeEntrance {
@@ -422,7 +351,7 @@
         }
 
         .welcome-title {
-            font-size: var(--text-3xl);
+            font-size: var(--text-4xl);
             font-weight: 900;
             color: var(--accent-color);
             margin-bottom: var(--space-md);
@@ -432,12 +361,12 @@
         .welcome-subtitle {
             font-size: var(--text-lg);
             color: var(--text-secondary);
-            margin-bottom: var(--space-3xl);
+            margin-bottom: var(--space-4xl);
             line-height: 1.5;
         }
 
         .customization-section {
-            margin-bottom: var(--space-3xl);
+            margin-bottom: var(--space-4xl);
         }
 
         .section-title {
@@ -453,11 +382,11 @@
             align-items: center;
             justify-content: center;
             gap: var(--space-sm);
-            margin-bottom: var(--space-2xl);
+            margin-bottom: var(--space-4xl);
         }
 
         .theme-option {
-            padding: var(--space-md) var(--space-lg);
+            padding: var(--space-sm) var(--space-md);
             border: 2px solid var(--border-gray);
             border-radius: var(--border-radius-lg);
             background: var(--bg-secondary);
@@ -467,10 +396,9 @@
             transition: var(--transition-base);
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
+            gap: var(--space-xs);
             position: relative;
             overflow: hidden;
-            min-height: 48px;
         }
 
         .theme-option.active {
@@ -489,13 +417,13 @@
         .color-swatches {
             display: flex;
             justify-content: center;
-            gap: var(--space-md);
-            margin-bottom: var(--space-2xl);
+            gap: var(--space-sm);
+            margin-bottom: var(--space-4xl);
         }
 
         .color-swatch {
-            width: var(--space-3xl);
-            height: var(--space-3xl);
+            width: var(--space-2xl);
+            height: var(--space-2xl);
             border-radius: var(--border-radius-full);
             border: 3px solid transparent;
             cursor: pointer;
@@ -523,7 +451,7 @@
             transform: translate(-50%, -50%);
             color: white;
             font-weight: bold;
-            font-size: var(--text-base);
+            font-size: var(--text-sm);
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
@@ -533,58 +461,767 @@
         .color-swatch.yellow { background: #eec643; }
         .color-swatch.purple { background: #805AD5; }
 
-        /* ===== HERO SECTION STYLING ===== */
-        .hero-section {
+        /* ===== DISCLAIMER NOTIFICATION ===== */
+        #disclaimer-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 90%, black) 100%);
+            color: var(--accent-text-color);
+            padding: var(--space-sm) var(--space-lg);
+            z-index: 10000 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-md);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            box-shadow: var(--shadow-medium);
+            transform: translateY(0);
+            transition: transform var(--transition-base), opacity var(--transition-base);
+        }
+
+        #disclaimer-bar.is-hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .disclaimer-text {
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .disclaimer-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: inherit;
+            width: 24px;
+            height: 24px;
+            border-radius: var(--border-radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-size: 16px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .disclaimer-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* ===== TUTORIAL CONTENT CONTAINER ===== */
+        #tutorial-content {
+            width: 100%;
+            height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--transition-slow), visibility var(--transition-slow);
+        }
+
+        #tutorial-content.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Fixed Header */
+        .fixed-header {
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-gray);
+            padding: var(--space-md) var(--space-lg);
+            z-index: var(--z-header);
+            transition: var(--transition-base);
+        }
+
+        body.theme-dark .fixed-header {
+            background: rgba(26, 32, 44, 0.95);
+        }
+
+        body.disclaimer-hidden .fixed-header {
+            top: 0;
+        }
+
+        .header-content {
+            max-width: var(--max-content-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .brand-label {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== WIZARD ENGINE - THE FOOLPROOF IMPLEMENTATION ===== */
+        .main-container {
+            /* NEUTRALIZED: All layout interference removed for fixed wizard positioning */
+        }
+
+        /* THE CENTERING FIX - MANDATORY & FINAL - ALL CONFLICTS ELIMINATED */
+        #wizard-container {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            margin: 0 !important;
+            perspective: 1500px;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        /* THE WIZARD ANIMATION & VISIBILITY - THE CORRECT IMPLEMENTATION */
+        #wizard-container > section {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateY(-90deg);
+            width: 90vw;
+            max-width: var(--max-content-width);
+            height: auto;
+            max-height: 80vh;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+            backface-visibility: hidden;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: var(--space-4xl) var(--space-md);
+            margin: 0;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        #wizard-container > section.active-step {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) rotateY(0deg);
+            z-index: 10;
+        }
+
+        /* Hero Section Styling */
+        .hero-section {
+            background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 80%, black) 100%);
+            color: var(--accent-text-color);
             text-align: center;
+            justify-content: center;
         }
 
         .hero-title {
-            font-size: var(--text-4xl);
+            font-size: var(--text-5xl);
             font-weight: 900;
-            color: var(--accent-color);
-            margin-bottom: var(--space-lg);
+            margin-bottom: var(--space-md);
             line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--accent-text-color);
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
         }
 
         .hero-subtitle {
             font-size: var(--text-lg);
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: var(--space-2xl);
+            opacity: 0.95;
+            margin-bottom: var(--space-lg);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            font-weight: 400;
         }
 
-        /* ===== RESPONSIVE ADJUSTMENTS ===== */
-        @media (max-width: 480px) {
-            .welcome-content {
-                padding: var(--space-2xl) var(--space-lg);
+        /* Content Sections */
+        .content-section {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            text-align: left;
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--border-gray);
+            margin: var(--space-md);
+            padding: var(--space-2xl);
+        }
+
+        .content-section h2 {
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: var(--space-lg);
+            line-height: 1.2;
+        }
+
+        .content-section p {
+            margin-bottom: var(--space-md);
+            line-height: 1.7;
+        }
+
+        .content-section ol,
+        .content-section ul {
+            margin-bottom: var(--space-lg);
+            padding-left: var(--space-lg);
+        }
+
+        .content-section li {
+            margin-bottom: var(--space-sm);
+            line-height: 1.6;
+        }
+
+        .content-section code {
+            background: var(--bg-secondary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-size: 0.9em;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .info-box {
+            background-color: var(--group-box-bg);
+            color: var(--group-box-text);
+            border: 1px solid var(--accent-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--space-md);
+            margin: var(--space-lg) 0;
+        }
+
+        .note-block {
+            background-color: var(--group-box-bg);
+            color: var(--group-box-text);
+            border-left: 4px solid var(--accent-color);
+            padding: var(--space-md);
+            margin: var(--space-lg) 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .important-text {
+            color: #D69E2E;
+            font-weight: 600;
+        }
+
+        .placeholder-text {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* Footer Section */
+        .footer-section {
+            background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 80%, black) 100%);
+            color: var(--accent-text-color);
+            text-align: center;
+            justify-content: center;
+        }
+
+        .completion-content h2 {
+            font-size: var(--text-4xl);
+            font-weight: 900;
+            margin-bottom: var(--space-lg);
+            color: var(--accent-text-color);
+        }
+
+        .contact-info {
+            margin-top: var(--space-2xl);
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-info a {
+            color: var(--accent-text-color);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition-base);
+        }
+
+        .contact-info a:hover {
+            border-bottom-color: var(--accent-text-color);
+        }
+
+        /* ===== WIZARD NAVIGATION BAR ===== */
+        .wizard-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-gray);
+            padding: var(--space-md) var(--space-lg);
+            z-index: var(--z-navigation);
+        }
+
+        body.theme-dark .wizard-navigation {
+            background: rgba(26, 32, 44, 0.95);
+        }
+
+        .nav-content {
+            max-width: var(--max-content-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-lg);
+            border: 2px solid var(--accent-color);
+            background: var(--accent-color);
+            color: var(--accent-text-color);
+            border-radius: var(--border-radius-full);
+            font-weight: 600;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: var(--transition-base);
+            min-width: 120px;
+            justify-content: center;
+            min-height: 48px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .nav-btn:disabled {
+            background: var(--border-gray);
+            border-color: var(--border-gray);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .prev-btn svg {
+            order: -1;
+        }
+
+        .progress-indicator {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            min-width: 120px;
+        }
+
+        /* ===== DYNAMIC GROUP BOX TEXT COLOR - THE CORRECT CONTRAST FIX ===== */
+        #wizard-container section ol,
+        #wizard-container section ul {
+            color: var(--group-box-text);
+        }
+
+        /* ===== MOBILE-SPECIFIC ENHANCEMENTS WITH BOOTSTRAP ===== */
+        @media (max-width: 992px) {
+            /* iOS Safari Viewport Fix */
+            html {
+                height: -webkit-fill-available;
             }
-            
-            .welcome-title {
-                font-size: var(--text-2xl);
+
+            /* Remove desktop centering on mobile, let Bootstrap handle it */
+            #wizard-container {
+                position: static !important;
+                transform: none !important;
+                top: auto !important;
+                left: auto !important;
             }
+
+            /* Slide animations - keep the card flip effect */
+            #wizard-container > section {
+                opacity: 0;
+                visibility: hidden;
+                transform: rotateY(-90deg);
+                transition: transform 0.6s ease, opacity 0.6s ease;
+                backface-visibility: hidden;
+                background: var(--bg-primary);
+            }
+
+            #wizard-container > section.active-step {
+                opacity: 1;
+                visibility: visible;
+                transform: rotateY(0deg);
+                z-index: 10;
+            }
+
+            /* Mobile Typography Adjustments */
+            #wizard-container h1 {
+                font-size: 1.75rem;
+                margin-bottom: 1rem;
+            }
+
+            #wizard-container h2 {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            #wizard-container h3 {
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+            #wizard-container .group-box h3 {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            /* Mobile Button Styles */
+            .wizard-nav-button {
+                min-height: 44px; /* iOS touch target requirement */
+                font-size: 16px;
+                padding: 12px 20px;
+                border-radius: 8px;
+            }
+
+            /* Navigation Bar - Mobile Layout */
+            .wizard-navigation {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                transform: none;
+                width: 100%;
+                padding: 16px;
+                background: var(--bg-primary);
+                border-top: 1px solid var(--border-gray);
+                flex-shrink: 0;
+            }
+
+            body.theme-dark .wizard-navigation {
+                background: var(--bg-primary);
+                border-top: 1px solid var(--border-gray);
+            }
+
+            /* Disable swipe navigation on mobile to prevent scrolling conflicts */
+            .wizard-step {
+                touch-action: pan-y; /* Only allow vertical scrolling */
+            }
+
+            /* TASK 2: ADAPTIVE TYPOGRAPHY & SPACING - MOBILE-FIRST HIERARCHY */
             
+            /* Hero Section Typography */
             .hero-title {
                 font-size: var(--text-3xl);
+                margin-bottom: 16px;
+                line-height: 1.2;
             }
-            
+
+            .hero-subtitle {
+                font-size: var(--text-base);
+                margin-bottom: 24px;
+                line-height: 1.5;
+            }
+
+            /* Content Section Typography */
+            .content-section h2 {
+                font-size: var(--text-2xl);
+                margin-bottom: 16px;
+                line-height: 1.3;
+            }
+
+            .content-section p {
+                font-size: var(--text-base);
+                margin-bottom: 16px;
+                line-height: 1.6;
+            }
+
+            .content-section li {
+                font-size: var(--text-base);
+                margin-bottom: 8px;
+                line-height: 1.5;
+            }
+
+            /* CONTENT SECTIONS - MOBILE FLOW LAYOUT */
+            .content-section {
+                padding: 20px;
+                margin: 0;
+                width: 100%;
+                align-self: stretch;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Hero sections - proper mobile layout */
+            .hero-section {
+                justify-content: center;
+                text-align: center;
+                padding: 40px 20px;
+                min-height: auto;
+            }
+
+            /* Footer sections - proper mobile layout */
+            .footer-section {
+                justify-content: center;
+                text-align: center;
+                padding: 40px 20px;
+                min-height: auto;
+            }
+
+            .info-box {
+                padding: 16px;
+                margin: 16px 0;
+                font-size: var(--text-sm);
+            }
+
+            .note-block {
+                padding: 16px;
+                margin: 16px 0;
+                font-size: var(--text-sm);
+            }
+
+            .content-section ol,
+            .content-section ul {
+                margin-bottom: 16px;
+                padding-left: 20px;
+            }
+
+            /* Footer Section Mobile Optimization */
+            .completion-content h2 {
+                font-size: var(--text-3xl);
+                margin-bottom: 16px;
+            }
+
+            .contact-info {
+                margin-top: 24px;
+                padding: 16px;
+                font-size: var(--text-sm);
+            }
+
+            /* Header Optimization */
+            .fixed-header {
+                padding: 12px 16px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .logo {
+                font-size: var(--text-lg);
+            }
+
+            .brand-label {
+                font-size: var(--text-xs);
+            }
+
+            /* Navigation Bar Styling */
+            .wizard-navigation {
+                padding: 16px 12px;
+                background: var(--bg-primary);
+                border-top: 1px solid var(--border-gray);
+            }
+
+            body.theme-dark .wizard-navigation {
+                background: var(--bg-primary);
+            }
+
+            /* Height rules are handled in main wizard container section above */
+
+            .nav-btn {
+                min-width: 80px;
+                padding: 12px 16px;
+                font-size: var(--text-sm);
+                min-height: 44px;
+            }
+
+            .progress-indicator {
+                font-size: var(--text-xs);
+                min-width: 100px;
+            }
+
+            /* Welcome Screen Mobile Optimization */
+            .welcome-content {
+                padding: 32px 20px;
+                max-width: 95%;
+                max-height: 80vh;
+                overflow-y: auto;
+                margin: 0;
+            }
+
+            #welcome-modal {
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 20px;
+            }
+
+            .welcome-title {
+                font-size: var(--text-3xl);
+                margin-bottom: 12px;
+            }
+
+            .welcome-subtitle {
+                font-size: var(--text-base);
+                margin-bottom: 32px;
+            }
+
+            .section-title {
+                font-size: var(--text-lg);
+                margin-bottom: 16px;
+            }
+
             .theme-toggle-container {
                 flex-direction: column;
-                gap: var(--space-md);
+                gap: 8px;
+                margin-bottom: 32px;
             }
-            
-            .nav-btn {
-                min-width: 70px;
+
+            .theme-option {
+                padding: 12px 16px;
                 font-size: var(--text-sm);
+            }
+
+            .color-swatches {
+                gap: 12px;
+                margin-bottom: 32px;
+            }
+
+            .color-swatch {
+                width: 32px;
+                height: 32px;
+            }
+
+            /* Password Gate Mobile Optimization */
+            .password-content {
+                padding: 32px 24px;
+                max-width: 95%;
+                max-height: 80vh;
+                overflow-y: auto;
+                margin: 0;
+            }
+
+            #password-gate {
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 20px;
+            }
+
+            .password-title {
+                font-size: var(--text-3xl);
+                margin-bottom: 12px;
+            }
+
+            .password-subtitle {
+                font-size: var(--text-base);
+                margin-bottom: 32px;
+            }
+
+            .password-input {
+                padding: 16px 20px;
+                font-size: var(--text-base);
+            }
+
+            .password-submit {
+                padding: 16px 24px;
+                font-size: var(--text-base);
+            }
+
+            /* Mobile-Specific Improvements */
+            .main-container {
+                /* NEUTRALIZED: Mobile layout interference removed */
+            }
+
+            /* Ensure proper touch targets */
+            button, .nav-btn, .theme-option, .color-swatch {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            /* Optimize code blocks for mobile */
+            .content-section code {
+                font-size: 0.85em;
+                padding: 3px 6px;
+                word-break: break-word;
+            }
+
+            /* Mobile scrolling improvements */
+            * {
+                -webkit-overflow-scrolling: touch;
             }
         }
 
-        /* ===== SMOOTH SCROLL RESET ===== */
-        #wizard-container > section {
-            scroll-behavior: smooth;
+        /* ===== MOBILE TYPOGRAPHY REFINEMENTS ===== */
+        @media (max-width: 576px) {
+            #wizard-container h1 {
+                font-size: 1.5rem;
+            }
+
+            #wizard-container h2 {
+                font-size: 1.25rem;
+            }
+
+            #wizard-container p,
+            #wizard-container li {
+                font-size: 0.875rem;
+            }
+        }
+
+        /* ===== iOS SAFE AREA SUPPORT ===== */
+        @supports (padding: env(safe-area-inset-top)) {
+            .fixed-header {
+                padding-top: max(12px, env(safe-area-inset-top));
+            }
+
+            .wizard-navigation {
+                padding-bottom: max(16px, env(safe-area-inset-bottom));
+            }
+
+            #password-gate,
+            #welcome-modal {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+
+        /* ===== ANIMATIONS & MICRO-INTERACTIONS ===== */
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .keyboard-navigation *:focus {
+            outline: 2px solid var(--accent-color) !important;
+            outline-offset: 2px !important;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.3);
+                --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.4);
+                --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.5);
+            }
         }
 
         /* Reduced motion support */
@@ -602,8 +1239,47 @@
     </style>
 </head>
 <body class="scroll-lock">
+    <!-- ===== SECURE PASSWORD GATE (THE AUTHENTICATION LAYER) ===== -->
+    <div id="password-gate">
+        <div class="password-content">
+            <div class="lock-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <circle cx="12" cy="16" r="1"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+            </div>
+            <h1 class="password-title">Authentication Required</h1>
+            <p class="password-subtitle">Please enter the password to access the DMSS Tutorial.</p>
+            
+            <form id="password-form" class="password-form">
+                <div class="password-input-container">
+                    <input 
+                        type="password" 
+                        id="password-input" 
+                        class="password-input"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+                <button type="submit" class="password-submit" id="password-submit">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10,17 15,12 10,7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Unlock Tutorial
+                </button>
+                <div class="password-error" id="password-error">
+                    Incorrect password. Please try again.
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ===== WELCOME EXPERIENCE (THE GRAND ENTRY) ===== -->
-    <div id="welcome-modal">
+    <div id="welcome-modal" class="is-hidden">
         <div class="welcome-content">
             <h1 class="welcome-title">Ageint Security DMSS Tutorial</h1>
             <p class="welcome-subtitle">Personalize your tutorial experience.</p>
@@ -641,213 +1317,339 @@
     </div>
 
     <!-- ===== DISCLAIMER NOTIFICATION ===== -->
-    <div id="disclaimer-bar" class="is-hidden">
+    <div id="disclaimer-bar">
         <div class="disclaimer-text">
             If you are having trouble at any point during this process, feel free to call us at <strong>713-962-3558</strong>
         </div>
         <button class="disclaimer-close" id="disclaimerClose" aria-label="Close notification">×</button>
     </div>
 
-    <!-- ===== MOBILE HEADER ===== -->
-    <div id="mobile-header-container" class="is-hidden">
-        <a href="#" class="mobile-header-logo">Ageint Security</a>
-        <div class="mobile-header-brand">Created by Ageint Security</div>
-    </div>
-
-    <!-- ===== MAIN WIZARD CONTAINER ===== -->
-    <div id="wizard-container" class="is-hidden">
-        <!-- Step 1: Welcome -->
-        <section class="hero-section" id="hero" data-step="0">
-            <h1 class="hero-title">DMSS App Setup Guide</h1>
-            <p class="hero-subtitle">A comprehensive guide to help you set up your DMSS app on an additional phone with professional step-by-step instructions.</p>
-        </section>
-
-        <!-- Step 2: Overview -->
-        <section class="content-section" id="overview" data-step="1">
-            <h2>Overview: What We'll Do</h2>
-            <p>We'll help you get the camera views from one phone onto another using the DMSS app.</p>
-            
-            <div class="info-box">
-                <p><strong>Two-Part Process:</strong></p>
-                <p>Part 1: Get the camera's serial number from the working phone</p>
-                <p>Part 2: Add the cameras to the new phone</p>
-            </div>
-
-            <div class="note-block">
-                <p>You can also view an easier-to-read copy of these instructions at: <br><a href="https://docs.google.com/document/d/14SbRrhN0ojhyRPH5K6Q9EkYXfjoewWPcuoVqFCQgUbM/edit?usp=sharing" target="_blank">View Instructions Online</a></p>
-            </div>
-        </section>
-
-        <!-- Step 3: Part 1 Introduction -->
-        <section class="content-section" id="part1-intro" data-step="2">
-            <h2>Part 1: Find the Serial Number</h2>
-            <p><em>This section is for the person whose phone already has the cameras working.</em></p>
-            
-            <div class="info-box">
-                <p><strong>What you'll need:</strong></p>
-                <ul>
-                    <li>The phone that already has DMSS working</li>
-                    <li>Ability to take a screenshot</li>
-                </ul>
-            </div>
-            
-            <p>We need to find the camera's <strong>Serial Number (S/N)</strong> from your working phone. This is like the camera's unique ID that we'll use to add it to the other phone.</p>
-        </section>
-
-        <!-- Step 4: Open DMSS App -->
-        <section class="content-section" id="open-app" data-step="3">
-            <h2>Step 1: Open the DMSS App</h2>
-            <div style="text-align: center; margin: var(--space-2xl) 0;">
-                <div style="font-size: 64px; color: var(--accent-color); margin-bottom: var(--space-md);">📱</div>
-            </div>
-            <p><strong>Find the DMSS app icon on your phone and tap it to open.</strong></p>
-            <p>You should see a list of your cameras or a screen where you can see them.</p>
-        </section>
-
-        <!-- Step 5: Find Three Dots -->
-        <section class="content-section" id="find-dots" data-step="4">
-            <h2>Step 2: Find the Three Dots Menu</h2>
-            <div style="text-align: center; margin: var(--space-2xl) 0;">
-                <div style="font-size: 64px; color: var(--accent-color); margin-bottom: var(--space-md);">⋮</div>
-            </div>
-            <p><strong>Look next to the camera you want the information for.</strong></p>
-            <p>On the right side, you should see three little dots (<code>⋮</code>). They might be next to a round "play" button.</p>
-        </section>
-
-        <!-- Step 6: Tap Device Details -->
-        <section class="content-section" id="device-details" data-step="5">
-            <h2>Step 3: Tap "Device Details"</h2>
-            <p><strong>1. Tap on those three dots (<code>⋮</code>)</strong></p>
-            <p>A small menu will pop up.</p>
-            
-            <p><strong>2. Tap on the option that says "Device Details"</strong></p>
-            
-            <div class="note-block">
-                <p>This will open a screen with technical information about your camera.</p>
-            </div>
-        </section>
-
-        <!-- Step 7: Find Serial Number -->
-        <section class="content-section" id="find-serial" data-step="6">
-            <h2>Step 4: Find and Screenshot the Serial Number</h2>
-            <p><strong>Look for "S/N:" or "SN:" on the Device Details screen.</strong></p>
-            
-            <div class="info-box">
-                <p><strong>What to look for:</strong></p>
-                <ul>
-                    <li>Text that says "<code>S/N:</code>" or "<code>SN:</code>"</li>
-                    <li>This is followed by a long string of letters and numbers</li>
-                    <li>This is the Serial Number we need!</li>
-                </ul>
-            </div>
-            
-            <p><strong>Take a screenshot of this page.</strong></p>
-            <p><em>Most phones: Press power button + volume down button at the same time.</em></p>
-        </section>
-
-        <!-- Step 8: Alternative Location -->
-        <section class="content-section" id="alternative-location" data-step="7">
-            <h2>Step 5: If You Don't See S/N Right Away</h2>
-            <div style="text-align: center; margin: var(--space-2xl) 0;">
-                <div style="font-size: 64px; color: var(--accent-color); margin-bottom: var(--space-md);">→</div>
-            </div>
-            <p><strong>Look for a small arrow pointing right (→)</strong>, usually at the very top right of the screen.</p>
-            
-            <p><strong>Tap that arrow.</strong></p>
-            
-            <p>This will take you to another page. <strong>Take a screenshot of this new page.</strong> The Serial Number should be on this page.</p>
-        </section>
-
-        <!-- Step 9: Part 2 Introduction -->
-        <section class="content-section" id="part2-intro" data-step="8">
-            <h2>Part 2: Add Cameras to New Phone</h2>
-            <p><em>This section is for the person setting up the DMSS app on a different phone.</em></p>
-            
-            <div class="info-box">
-                <p><strong>What you'll need:</strong></p>
-                <ul>
-                    <li>The screenshot with the Serial Number from Part 1</li>
-                    <li>The new phone with DMSS app installed</li>
-                    <li>These login details: Username: <code>admin</code>, Password: <code>Ageint2016</code></li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Step 10: Add Device -->
-        <section class="content-section" id="add-device" data-step="9">
-            <h2>Step 6: Start Adding a New Device</h2>
-            <div style="text-align: center; margin: var(--space-2xl) 0;">
-                <div style="font-size: 64px; color: var(--accent-color); margin-bottom: var(--space-md);">+</div>
-            </div>
-            <p><strong>1. Open the DMSS App</strong> on the new phone</p>
-            <p><strong>2. Tap the Plus Sign (+)</strong> on the app's main screen, usually at the top right corner</p>
-            <p><strong>3. Choose "Manually Add"</strong> from the menu that appears</p>
-        </section>
-
-        <!-- Step 11: Device Configuration -->
-        <section class="content-section" id="device-config" data-step="10">
-            <h2>Step 7: Configure Device Settings</h2>
-            <p><strong>1. Select Device Type:</strong></p>
-            <ul>
-                <li>Tap on "<strong>NVR/XVR</strong>" from the device list</li>
-                <li>On the next screen, tap on "<strong>NVR</strong>"</li>
-            </ul>
-            
-            <p><strong>2. Enter the Serial Number:</strong></p>
-            <ul>
-                <li>Type in the number from your screenshot</li>
-                <li class="important-text">Important: All "0"s are the number zero, not the letter "O"</li>
-            </ul>
-            
-            <p><strong>3. Fill in Device Details:</strong></p>
-            <ul>
-                <li><strong>Device Name:</strong> <span class="placeholder-text">[Choose any name you like]</span></li>
-                <li><strong>Username:</strong> <code>admin</code></li>
-                <li><strong>Password:</strong> <code>Ageint2016</code> <em>(Capital 'A'!)</em></li>
-            </ul>
-        </section>
-
-        <!-- Step 12: Completion -->
-        <section class="footer-section" id="completion" data-step="11">
-            <div class="completion-content">
-                <h2>🎉 Setup Complete!</h2>
-                <p>Tap the <strong>Save</strong> button (or "Next" or 💾) at the top right.</p>
-                <p>You might need to tap "Next" or "Done" a couple more times.</p>
-                
-                <div class="contact-info">
-                    <p><strong>Your cameras should now appear in the app!</strong></p>
-                    <p>If you encounter any issues, please don't hesitate to contact us:</p>
-                    <p><strong>The Support Team</strong><br>
-                    Ageint Security<br>
-                    <a href="tel:7139623558">713-962-3558</a></p>
+    <!-- ===== BOOTSTRAP APP SHELL ===== -->
+    <div id="tutorial-content" class="d-flex flex-column vh-100">
+        
+        <!-- App Header (Mobile Only) -->
+        <header class="d-lg-none bg-white border-bottom shadow-sm">
+            <div class="container-fluid px-3 py-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <h6 class="mb-0 fw-bold text-primary">Ageint Security</h6>
+                    </div>
+                    <small class="text-muted">DMSS Setup Guide</small>
                 </div>
             </div>
-        </section>
-    </div>
-    
-    <!-- ===== NAVIGATION BAR ===== -->
-    <div id="wizard-navigation-bar" class="is-hidden">
-        <button class="nav-btn prev-btn" id="prevBtn" disabled>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Previous
-        </button>
-        
-        <div class="progress-indicator">
-            <span id="stepCounter">Step 1 of 12</span>
-        </div>
-        
-        <button class="nav-btn next-btn" id="nextBtn">
-            Next
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-        </button>
-    </div>
+        </header>
 
+        <!-- Desktop Header (Desktop Only) -->
+        <header class="fixed-header d-none d-lg-block">
+            <div class="header-content">
+                <a href="#" class="logo">Ageint Security</a>
+                <div class="brand-label">Created by Ageint Security</div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow-1 position-relative overflow-hidden">
+            <div id="wizard-container" class="position-absolute top-50 start-50 translate-middle d-lg-block w-100 h-100">
+                <!-- Step 1: Welcome -->
+                <section class="hero-section position-absolute w-100 h-100 p-3 overflow-auto" id="hero" data-step="0">
+                    <div class="d-flex flex-column justify-content-center h-100 text-center">
+                        <h1 class="hero-title">DMSS App Setup Guide</h1>
+                        <p class="hero-subtitle">A comprehensive guide to help you set up your DMSS app on an additional phone with professional step-by-step instructions.</p>
+                    </div>
+                </section>
+
+                <!-- Step 2: Overview -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="overview" data-step="1">
+                    <h2>Overview: What We'll Do</h2>
+                    <p>We'll help you get the camera views from one phone onto another using the DMSS app.</p>
+                    
+                    <div class="info-box border border-primary rounded p-3 my-3 bg-light">
+                        <p><strong>Two-Part Process:</strong></p>
+                        <p>Part 1: Get the camera's serial number from the working phone</p>
+                        <p>Part 2: Add the cameras to the new phone</p>
+                    </div>
+
+                    <div class="note-block border-start border-primary border-4 bg-light p-3 my-3">
+                        <p>You can also view an easier-to-read copy of these instructions at: <br><a href="https://docs.google.com/document/d/14SbRrhN0ojhyRPH5K6Q9EkYXfjoewWPcuoVqFCQgUbM/edit?usp=sharing" target="_blank" class="text-decoration-none">View Instructions Online</a></p>
+                    </div>
+                </section>
+
+                <!-- Step 3: Part 1 Introduction -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="part1-intro" data-step="2">
+                    <h2>Part 1: Find the Serial Number</h2>
+                    <p class="fst-italic">This section is for the person whose phone already has the cameras working.</p>
+                    
+                    <div class="info-box border border-primary rounded p-3 my-3 bg-light">
+                        <p><strong>What you'll need:</strong></p>
+                        <ul class="mb-0">
+                            <li>The phone that already has DMSS working</li>
+                            <li>Ability to take a screenshot</li>
+                        </ul>
+                    </div>
+                    
+                    <p>We need to find the camera's <strong>Serial Number (S/N)</strong> from your working phone. This is like the camera's unique ID that we'll use to add it to the other phone.</p>
+                </section>
+
+                <!-- Step 4: Open DMSS App -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="open-app" data-step="3">
+                    <h2>Step 1: Open the DMSS App</h2>
+                    <div class="text-center my-4">
+                        <div class="display-1 text-primary mb-3">📱</div>
+                    </div>
+                    <p><strong>Find the DMSS app icon on your phone and tap it to open.</strong></p>
+                    <p>You should see a list of your cameras or a screen where you can see them.</p>
+                </section>
+
+                <!-- Step 5: Find Three Dots -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="find-dots" data-step="4">
+                    <h2>Step 2: Find the Three Dots Menu</h2>
+                    <div class="text-center my-4">
+                        <div class="display-1 text-primary mb-3">⋮</div>
+                    </div>
+                    <p><strong>Look next to the camera you want the information for.</strong></p>
+                    <p>On the right side, you should see three little dots (<code class="bg-light px-1">⋮</code>). They might be next to a round "play" button.</p>
+                </section>
+
+                <!-- Step 6: Tap Device Details -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="device-details" data-step="5">
+                    <h2>Step 3: Tap "Device Details"</h2>
+                    <p><strong>1. Tap on those three dots (<code class="bg-light px-1">⋮</code>)</strong></p>
+                    <p>A small menu will pop up.</p>
+                    
+                    <p><strong>2. Tap on the option that says "Device Details"</strong></p>
+                    
+                    <div class="note-block border-start border-primary border-4 bg-light p-3 my-3">
+                        <p class="mb-0">This will open a screen with technical information about your camera.</p>
+                    </div>
+                </section>
+
+                <!-- Step 7: Find Serial Number -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="find-serial" data-step="6">
+                    <h2>Step 4: Find and Screenshot the Serial Number</h2>
+                    <p><strong>Look for "S/N:" or "SN:" on the Device Details screen.</strong></p>
+                    
+                    <div class="info-box border border-primary rounded p-3 my-3 bg-light">
+                        <p><strong>What to look for:</strong></p>
+                        <ul class="mb-0">
+                            <li>Text that says "<code class="bg-white px-1">S/N:</code>" or "<code class="bg-white px-1">SN:</code>"</li>
+                            <li>This is followed by a long string of letters and numbers</li>
+                            <li>This is the Serial Number we need!</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Take a screenshot of this page.</strong></p>
+                    <p class="fst-italic">Most phones: Press power button + volume down button at the same time.</p>
+                </section>
+
+                <!-- Step 8: Alternative Location -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="alternative-location" data-step="7">
+                    <h2>Step 5: If You Don't See S/N Right Away</h2>
+                    <div class="text-center my-4">
+                        <div class="display-1 text-primary mb-3">→</div>
+                    </div>
+                    <p><strong>Look for a small arrow pointing right (→)</strong>, usually at the very top right of the screen.</p>
+                    
+                    <p><strong>Tap that arrow.</strong></p>
+                    
+                    <p>This will take you to another page. <strong>Take a screenshot of this new page.</strong> The Serial Number should be on this page.</p>
+                </section>
+
+                <!-- Step 9: Part 2 Introduction -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="part2-intro" data-step="8">
+                    <h2>Part 2: Add Cameras to New Phone</h2>
+                    <p class="fst-italic">This section is for the person setting up the DMSS app on a different phone.</p>
+                    
+                    <div class="info-box border border-primary rounded p-3 my-3 bg-light">
+                        <p><strong>What you'll need:</strong></p>
+                        <ul class="mb-0">
+                            <li>The screenshot with the Serial Number from Part 1</li>
+                            <li>The new phone with DMSS app installed</li>
+                            <li>These login details: Username: <code class="bg-white px-1">admin</code>, Password: <code class="bg-white px-1">Ageint2016</code></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Step 10: Add Device -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="add-device" data-step="9">
+                    <h2>Step 6: Start Adding a New Device</h2>
+                    <div class="text-center my-4">
+                        <div class="display-1 text-primary mb-3">+</div>
+                    </div>
+                    <p><strong>1. Open the DMSS App</strong> on the new phone</p>
+                    <p><strong>2. Tap the Plus Sign (+)</strong> on the app's main screen, usually at the top right corner</p>
+                    <p><strong>3. Choose "Manually Add"</strong> from the menu that appears</p>
+                </section>
+
+                <!-- Step 11: Device Configuration -->
+                <section class="content-section position-absolute w-100 h-100 p-3 overflow-auto" id="device-config" data-step="10">
+                    <h2>Step 7: Configure Device Settings</h2>
+                    <p><strong>1. Select Device Type:</strong></p>
+                    <ul>
+                        <li>Tap on "<strong>NVR/XVR</strong>" from the device list</li>
+                        <li>On the next screen, tap on "<strong>NVR</strong>"</li>
+                    </ul>
+                    
+                    <p><strong>2. Enter the Serial Number:</strong></p>
+                    <ul>
+                        <li>Type in the number from your screenshot</li>
+                        <li class="important-text text-warning fw-semibold">Important: All "0"s are the number zero, not the letter "O"</li>
+                    </ul>
+                    
+                    <p><strong>3. Fill in Device Details:</strong></p>
+                    <ul>
+                        <li><strong>Device Name:</strong> <span class="placeholder-text fst-italic text-secondary">[Choose any name you like]</span></li>
+                        <li><strong>Username:</strong> <code class="bg-light px-1">admin</code></li>
+                        <li><strong>Password:</strong> <code class="bg-light px-1">Ageint2016</code> <em>(Capital 'A'!)</em></li>
+                    </ul>
+                </section>
+
+                <!-- Step 12: Completion -->
+                <section class="footer-section position-absolute w-100 h-100 p-3 overflow-auto" id="completion" data-step="11">
+                    <div class="completion-content d-flex flex-column justify-content-center h-100 text-center">
+                        <h2 class="text-white">🎉 Setup Complete!</h2>
+                        <p class="text-white">Tap the <strong>Save</strong> button (or "Next" or 💾) at the top right.</p>
+                        <p class="text-white">You might need to tap "Next" or "Done" a couple more times.</p>
+                        
+                        <div class="contact-info bg-white bg-opacity-10 rounded p-3 mt-4">
+                            <p class="text-white"><strong>Your cameras should now appear in the app!</strong></p>
+                            <p class="text-white">If you encounter any issues, please don't hesitate to contact us:</p>
+                            <p class="text-white mb-0"><strong>The Support Team</strong><br>
+                            Ageint Security<br>
+                            <a href="tel:7139623558" class="text-white text-decoration-none fw-semibold">713-962-3558</a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            </div>
+        </main>
+        
+        <!-- App Footer / Navigation (Mobile-Focused) -->
+        <footer class="d-lg-none bg-white border-top shadow-sm p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-outline-primary d-flex align-items-center gap-2 flex-shrink-0" id="prevBtn" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    <span class="d-none d-sm-inline">Previous</span>
+                </button>
+                
+                <div class="text-center px-3">
+                    <small class="fw-semibold text-secondary" id="stepCounter">Step 1 of 12</small>
+                </div>
+                
+                <button class="btn btn-primary d-flex align-items-center gap-2 flex-shrink-0" id="nextBtn">
+                    <span class="d-none d-sm-inline">Next</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+        
+        <!-- Desktop Navigation (Desktop Only) -->
+        <div class="wizard-navigation d-none d-lg-block">
+            <div class="nav-content">
+                <button class="nav-btn prev-btn" id="prevBtnDesktop" disabled>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                
+                <div class="progress-indicator">
+                    <span id="stepCounterDesktop">Step 1 of 12</span>
+                </div>
+                
+                <button class="nav-btn next-btn" id="nextBtnDesktop">
+                    Next
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
     <script>
-        // ===== WIZARD ENGINE: MOBILE-OPTIMIZED JAVASCRIPT ===== //
+        // ===== SECURITY LAYER - PASSWORD AUTHENTICATION ===== //
+        const CORRECT_HASH = '3c657c75225c56fce40360d1cab79a2c1a6bbc0eb900b0e267e877db4236ceff';
+        
+        // SHA-256 hashing function using SubtleCrypto API
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Password validation and application unlock
+        async function validatePassword(password) {
+            try {
+                const hashedInput = await sha256(password);
+                return hashedInput === CORRECT_HASH;
+            } catch (error) {
+                console.error('Password validation error:', error);
+                return false;
+            }
+        }
+
+        // Password gate management
+        function showPasswordError() {
+            const errorElement = document.getElementById('password-error');
+            const passwordInput = document.getElementById('password-input');
+            errorElement.classList.add('show');
+            passwordInput.value = '';
+            passwordInput.focus();
+            
+            // Hide error after 4 seconds
+            setTimeout(() => {
+                errorElement.classList.remove('show');
+            }, 4000);
+        }
+
+        function hidePasswordGate() {
+            const passwordGate = document.getElementById('password-gate');
+            passwordGate.classList.add('is-hidden');
+            
+            // After password gate is hidden, show welcome modal
+            setTimeout(() => {
+                const welcomeModal = document.getElementById('welcome-modal');
+                welcomeModal.classList.remove('is-hidden');
+            }, 500);
+        }
+
+        // Password form submission handler
+        async function handlePasswordSubmit(e) {
+            e.preventDefault();
+            
+            const passwordInput = document.getElementById('password-input');
+            const submitButton = document.getElementById('password-submit');
+            const password = passwordInput.value;
+            
+            if (!password) {
+                passwordInput.focus();
+                return;
+            }
+            
+            // Show loading state
+            submitButton.classList.add('loading');
+            submitButton.disabled = true;
+            
+            // Validate password
+            const isValid = await validatePassword(password);
+            
+            // Remove loading state
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+            
+            if (isValid) {
+                hidePasswordGate();
+            } else {
+                showPasswordError();
+            }
+        }
+
+        // ===== WIZARD ENGINE: CLEAN, ROBUST JAVASCRIPT ===== //
         
         // Global Variables
         let currentStep = 0;
@@ -856,15 +1658,21 @@
         
         // DOM Elements
         const wizardSteps = document.querySelectorAll('#wizard-container > section');
+        
+        // Mobile navigation elements
         const nextButton = document.getElementById('nextBtn');
         const prevButton = document.getElementById('prevBtn');
         const stepCounter = document.getElementById('stepCounter');
+        
+        // Desktop navigation elements
+        const nextButtonDesktop = document.getElementById('nextBtnDesktop');
+        const prevButtonDesktop = document.getElementById('prevBtnDesktop');
+        const stepCounterDesktop = document.getElementById('stepCounterDesktop');
+        
         const welcomeModal = document.getElementById('welcome-modal');
+        const tutorialContent = document.getElementById('tutorial-content');
         const disclaimerBar = document.getElementById('disclaimer-bar');
         const disclaimerClose = document.getElementById('disclaimerClose');
-        const wizardContainer = document.getElementById('wizard-container');
-        const mobileHeader = document.getElementById('mobile-header-container');
-        const navigationBar = document.getElementById('wizard-navigation-bar');
         
         // ===== WELCOME SCREEN FUNCTIONALITY (STATEFUL LOGIC) ===== //
         function setupWelcomeScreen() {
@@ -947,10 +1755,7 @@
         // Start the tutorial (transition from welcome to wizard)
         function startTutorial() {
             welcomeModal.classList.add('is-hidden');
-            disclaimerBar.classList.remove('is-hidden');
-            mobileHeader.classList.remove('is-hidden');
-            wizardContainer.classList.remove('is-hidden');
-            navigationBar.classList.remove('is-hidden');
+            tutorialContent.classList.add('is-visible');
             document.body.classList.remove('scroll-lock');
             
             // Initialize wizard after transition
@@ -981,25 +1786,62 @@
 
         // Update UI elements (buttons, counter)
         function updateUI() {
-            stepCounter.textContent = `Step ${currentStep + 1} of ${totalSteps}`;
+            // Update mobile counter
+            if (stepCounter) {
+                stepCounter.textContent = `Step ${currentStep + 1} of ${totalSteps}`;
+            }
             
-            // Update button states
-            prevButton.disabled = currentStep === 0;
+            // Update desktop counter
+            if (stepCounterDesktop) {
+                stepCounterDesktop.textContent = `Step ${currentStep + 1} of ${totalSteps}`;
+            }
             
-            if (currentStep === totalSteps - 1) {
-                nextButton.innerHTML = `
-                    Finish
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 6L9 17l-5-5"/>
-                    </svg>
-                `;
-            } else {
-                nextButton.innerHTML = `
-                    Next
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                `;
+            // Update mobile button states
+            if (prevButton) {
+                prevButton.disabled = currentStep === 0;
+            }
+            
+            // Update desktop button states
+            if (prevButtonDesktop) {
+                prevButtonDesktop.disabled = currentStep === 0;
+            }
+            
+            // Update mobile next button content
+            if (nextButton) {
+                if (currentStep === totalSteps - 1) {
+                    nextButton.innerHTML = `
+                        <span class="d-none d-sm-inline">Finish</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                    `;
+                } else {
+                    nextButton.innerHTML = `
+                        <span class="d-none d-sm-inline">Next</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    `;
+                }
+            }
+            
+            // Update desktop next button content
+            if (nextButtonDesktop) {
+                if (currentStep === totalSteps - 1) {
+                    nextButtonDesktop.innerHTML = `
+                        Finish
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                    `;
+                } else {
+                    nextButtonDesktop.innerHTML = `
+                        Next
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    `;
+                }
             }
         }
 
@@ -1021,13 +1863,19 @@
             if (disclaimerClose) {
                 disclaimerClose.addEventListener('click', () => {
                     disclaimerBar.classList.add('is-hidden');
+                    document.body.classList.add('disclaimer-hidden');
                 });
             }
         }
 
         // ===== EVENT LISTENERS ===== //
-        nextButton.addEventListener('click', nextStep);
-        prevButton.addEventListener('click', previousStep);
+        // Mobile navigation
+        if (nextButton) nextButton.addEventListener('click', nextStep);
+        if (prevButton) prevButton.addEventListener('click', previousStep);
+        
+        // Desktop navigation
+        if (nextButtonDesktop) nextButtonDesktop.addEventListener('click', nextStep);
+        if (prevButtonDesktop) prevButtonDesktop.addEventListener('click', previousStep);
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
@@ -1041,19 +1889,79 @@
         });
 
         // Touch gestures - DISABLED ON MOBILE to prevent scrolling conflicts
-        // This ensures smooth vertical scrolling within cards
-        
-        // ===== INITIALIZATION ===== //
+        // Only enable swipe navigation on larger screens (desktop/tablet)
+        function isMobileDevice() {
+            return window.innerWidth <= 768;
+        }
+
+        let startX = null;
+        document.addEventListener('touchstart', (e) => {
+            // DISABLE on mobile - swipes interfere with vertical scrolling
+            if (isMobileDevice()) return;
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            // DISABLE on mobile - swipes interfere with vertical scrolling
+            if (isMobileDevice() || !startX) return;
+            
+            const endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    nextStep(); // Swipe left = next
+                } else {
+                    previousStep(); // Swipe right = previous
+                }
+            }
+            
+            startX = null;
+        }, { passive: true });
+
+        // ===== PASSWORD GATE INITIALIZATION ===== //
+        function setupPasswordGate() {
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', handlePasswordSubmit);
+            }
+            
+            // Auto-focus password input
+            if (passwordInput) {
+                setTimeout(() => {
+                    passwordInput.focus();
+                }, 100);
+            }
+            
+            // Enter key handling
+            if (passwordInput) {
+                passwordInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handlePasswordSubmit(e);
+                    }
+                });
+            }
+        }
+
+        // ===== INITIALIZATION - NEW FLOW WITH PASSWORD GATE ===== //
         document.addEventListener('DOMContentLoaded', () => {
+            setupPasswordGate();
             setupWelcomeScreen();
             setupDisclaimer();
         });
 
         // Initialize immediately if DOM is already loaded
         if (document.readyState !== 'loading') {
+            setupPasswordGate();
             setupWelcomeScreen();
             setupDisclaimer();
         }
     </script>
+    
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
-</html> 
+</html>
