@@ -844,102 +844,67 @@
             /* STEP 1: Calculate Fixed Element Heights */
             /* Disclaimer bar: ~44px, Header: ~80px = Total: 124px */
             
-            /* FUNDAMENTAL LAYOUT CHANGE: Flexbox + proper spacing for fixed elements */
+            /* Step 1: The <body> as the Master Flex Container */
             body {
-                min-height: -webkit-fill-available !important;
-                display: flex !important;
-                flex-direction: column !important;
-                margin: 0 !important;
-                /* STEP 2: Apply padding-top to account for fixed elements */
-                padding-top: 124px !important; /* Disclaimer (44px) + Header (80px) */
+                display: flex;
+                flex-direction: column;
+                /* This is crucial: Make the body exactly the height of the visible screen */
+                height: 100vh;
+                margin: 0;
+                /* This prevents the entire page from having its own scrollbar, which can cause issues */
+                overflow: hidden;
             }
 
-            /* Ensure disclaimer bar stays at very top */
-            #disclaimer-bar {
-                position: fixed !important;
-                top: 0 !important;
-                height: 44px !important; /* Explicit height for calculation */
-                padding: 8px 16px !important;
-                font-size: 14px !important;
-            }
-
-            /* Position header directly below disclaimer */
+            /* Step 3: The Header and Footer */
+            #disclaimer-bar,
             .fixed-header {
-                position: fixed !important;
-                top: 44px !important; /* Height of disclaimer bar */
-                height: 80px !important; /* Explicit height for calculation */
-                padding: 16px !important;
+                flex-shrink: 0; /* This command is vital: it prevents these elements from shrinking */
+                position: relative; /* Ensure they are part of the flex flow, not fixed to the viewport */
             }
 
-            /* When disclaimer is hidden, adjust header position */
-            body.disclaimer-hidden {
-                padding-top: 80px !important; /* Only header height */
+            #disclaimer-bar {
+                padding: 8px 16px;
+                font-size: 14px;
             }
 
-            body.disclaimer-hidden .fixed-header {
-                top: 0 !important;
+            .fixed-header {
+                padding: 16px;
             }
 
-            /* Fixed Header Mobile Styles - Controlled by main fixed positioning */
             body.theme-dark .fixed-header {
-                background: rgba(26, 32, 44, 0.95) !important;
+                background: var(--bg-primary);
             }
 
-            /* Main Content Area - Flexible Growth */
-            .main-container {
-                flex-grow: 1 !important;
-                display: flex !important;
-                flex-direction: column !important;
-                overflow: hidden !important;
-            }
-
-            /* WIZARD CONTAINER - COMPLETE MOBILE REDESIGN */
+            /* Step 2: The Content Area (#wizard-container) as the Flexible Child */
             #wizard-container {
-                position: relative !important; /* Override fixed positioning */
-                top: auto !important;
-                left: auto !important;
-                transform: none !important;
-                width: 100% !important;
-                /* STEP 3: Account for all fixed elements - header + disclaimer + nav */
-                height: calc(100vh - 194px) !important; /* 124px (top) + 70px (nav) */
-                max-width: none !important;
-                max-height: none !important;
-                min-height: calc(100vh - 194px) !important;
-                display: flex !important;
-                flex-direction: column !important;
-                perspective: none !important;
+                flex-grow: 1; /* THE KEY: This forces the container to expand and fill the remaining vertical space */
+                position: relative; /* It must be 'relative' to be part of the flex flow, NOT 'fixed' or 'absolute' */
+                display: grid;
+                place-items: center;
+                overflow: hidden; /* Prevent the container itself from having weird scrollbars */
             }
 
-            /* Adjust wizard height when disclaimer is hidden */
-            body.disclaimer-hidden #wizard-container {
-                height: calc(100vh - 150px) !important; /* 80px (header) + 70px (nav) */
-                min-height: calc(100vh - 150px) !important;
-            }
-
-            /* Individual Wizard Steps - Full Mobile Optimized */
+            /* Step 3: The Fixed-Size Individual Slides (<section>) */
             #wizard-container > section {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                transform: none !important;
-                width: 100% !important;
-                height: 100% !important;
-                max-width: none !important;
-                max-height: none !important;
-                overflow-y: auto !important;
-                overflow-x: hidden !important;
-                padding: 16px !important;
-                box-sizing: border-box !important;
-                background: var(--bg-primary) !important;
-                border-radius: 0 !important; /* Remove border radius on mobile for full-screen feel */
-                box-shadow: none !important; /* Remove shadows on mobile for cleaner look */
-                opacity: 1 !important;
-                visibility: visible !important;
-                pointer-events: auto !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: flex-start !important;
-                align-items: stretch !important;
+                position: absolute; /* Positioned relative to the now-correctly-sized #wizard-container */
+                width: 90%;
+                height: 90%;
+                max-width: 500px;
+                max-height: 90%;
+                overflow-y: auto; /* Allow internal scrolling if content is long */
+                
+                /* All other styles like animation transitions, etc., remain */
+                background: var(--bg-primary);
+                border-radius: 16px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                padding: 24px;
+                box-sizing: border-box;
+                transform: rotateY(-90deg);
+                transition: transform 0.6s ease-in-out;
+            }
+
+            #wizard-container > section.active-step {
+                transform: rotateY(0deg);
             }
 
             /* Ensure scroll position resets happen at the slide level */
@@ -1122,17 +1087,13 @@
                 font-size: var(--text-xs);
             }
 
-            /* Navigation Bar - Mobile Fixed Bottom */
+            /* Navigation Bar - Part of Flex Flow */
             .wizard-navigation {
-                position: fixed !important;
-                bottom: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                padding: 16px 12px !important;
-                background: var(--bg-primary) !important;
-                border-top: 1px solid var(--border-gray) !important;
-                z-index: 100 !important;
-                transform: none !important;
+                flex-shrink: 0; /* This command is vital: it prevents these elements from shrinking */
+                position: relative; /* Ensure they are part of the flex flow, not fixed to the viewport */
+                padding: 16px 12px;
+                background: var(--bg-primary);
+                border-top: 1px solid var(--border-gray);
             }
 
             body.theme-dark .wizard-navigation {
