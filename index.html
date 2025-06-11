@@ -862,6 +862,9 @@
                 /* iOS-specific scrolling improvements */
                 -webkit-overflow-scrolling: touch;
                 overscroll-behavior: contain;
+                /* CRITICAL: Start content at top, not center */
+                justify-content: flex-start !important;
+                align-items: stretch !important;
             }
 
             /* TASK 2: ADAPTIVE TYPOGRAPHY & SPACING - MOBILE-FIRST HIERARCHY */
@@ -901,7 +904,23 @@
             /* Spacing Optimization */
             .content-section {
                 padding: 20px;
-                margin: 12px;
+                margin: 0 12px 12px 12px; /* Remove top margin, keep bottom */
+                width: auto;
+                align-self: stretch;
+            }
+
+            /* Ensure hero sections start at top */
+            .hero-section {
+                justify-content: flex-start !important;
+                padding-top: 40px;
+                text-align: center;
+            }
+
+            /* Ensure footer sections allow scrolling to bottom */
+            .footer-section {
+                justify-content: flex-start !important;
+                padding-top: 40px;
+                text-align: center;
             }
 
             .info-box {
@@ -973,6 +992,14 @@
             .welcome-content {
                 padding: 32px 20px;
                 max-width: 95%;
+                max-height: 80vh;
+                overflow-y: auto;
+                margin-top: 10vh; /* Start near top, not center */
+            }
+
+            #welcome-modal {
+                align-items: flex-start !important;
+                padding-top: 20px;
             }
 
             .welcome-title {
@@ -1015,6 +1042,14 @@
             .password-content {
                 padding: 40px 24px;
                 max-width: 95%;
+                max-height: 80vh;
+                overflow-y: auto;
+                margin-top: 10vh; /* Start near top, not center */
+            }
+
+            #password-gate {
+                align-items: flex-start !important;
+                padding-top: 20px;
             }
 
             .password-title {
@@ -1074,6 +1109,8 @@
             #wizard-container > section {
                 padding: 16px;
                 max-height: calc(500px - 32px);
+                justify-content: flex-start !important;
+                align-items: stretch !important;
             }
 
             .content-section {
