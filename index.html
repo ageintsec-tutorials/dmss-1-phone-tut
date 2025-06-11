@@ -841,28 +841,48 @@
                 height: -webkit-fill-available;
             }
 
-            /* FUNDAMENTAL LAYOUT CHANGE: Flexbox instead of fixed positioning */
+            /* STEP 1: Calculate Fixed Element Heights */
+            /* Disclaimer bar: ~44px, Header: ~80px = Total: 124px */
+            
+            /* FUNDAMENTAL LAYOUT CHANGE: Flexbox + proper spacing for fixed elements */
             body {
                 min-height: -webkit-fill-available;
                 display: flex;
                 flex-direction: column;
                 margin: 0;
-                padding: 0;
+                /* STEP 2: Apply padding-top to account for fixed elements */
+                padding-top: 124px; /* Disclaimer (44px) + Header (80px) */
             }
 
-            /* Fixed Header - Proper Space Allocation */
+            /* Ensure disclaimer bar stays at very top */
+            #disclaimer-bar {
+                position: fixed;
+                top: 0;
+                height: 44px; /* Explicit height for calculation */
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            /* Position header directly below disclaimer */
             .fixed-header {
-                flex-shrink: 0;
-                position: static; /* Override fixed positioning */
-                top: auto;
-                background: var(--bg-primary);
-                border-bottom: 1px solid var(--border-gray);
+                position: fixed;
+                top: 44px; /* Height of disclaimer bar */
+                height: 80px; /* Explicit height for calculation */
                 padding: 16px;
-                z-index: 100;
             }
 
+            /* When disclaimer is hidden, adjust header position */
+            body.disclaimer-hidden {
+                padding-top: 80px; /* Only header height */
+            }
+
+            body.disclaimer-hidden .fixed-header {
+                top: 0;
+            }
+
+            /* Fixed Header Mobile Styles - Controlled by main fixed positioning */
             body.theme-dark .fixed-header {
-                background: var(--bg-primary);
+                background: rgba(26, 32, 44, 0.95);
             }
 
             /* Main Content Area - Flexible Growth */
@@ -880,12 +900,19 @@
                 left: auto !important;
                 transform: none !important;
                 width: 100% !important;
-                height: 100% !important;
+                /* STEP 3: Account for all fixed elements - header + disclaimer + nav */
+                height: calc(100vh - 194px) !important; /* 124px (top) + 70px (nav) */
                 max-width: none !important;
                 max-height: none !important;
-                min-height: auto !important;
+                min-height: calc(100vh - 194px) !important;
                 display: flex;
                 flex-direction: column;
+            }
+
+            /* Adjust wizard height when disclaimer is hidden */
+            body.disclaimer-hidden #wizard-container {
+                height: calc(100vh - 150px) !important; /* 80px (header) + 70px (nav) */
+                min-height: calc(100vh - 150px) !important;
             }
 
             /* WIZARD SECTIONS - MOBILE OPTIMIZED LAYOUT */
@@ -1034,17 +1061,21 @@
 
             /* Navigation Bar - Mobile Fixed Bottom */
             .wizard-navigation {
-                flex-shrink: 0;
-                position: static; /* Override fixed positioning */
-                bottom: auto;
+                position: fixed !important;
+                bottom: 0 !important;
+                left: 0;
+                right: 0;
                 padding: 16px 12px;
                 background: var(--bg-primary);
                 border-top: 1px solid var(--border-gray);
+                z-index: 100;
             }
 
             body.theme-dark .wizard-navigation {
                 background: var(--bg-primary);
             }
+
+            /* Height rules are handled in main wizard container section above */
 
             .nav-btn {
                 min-width: 80px;
