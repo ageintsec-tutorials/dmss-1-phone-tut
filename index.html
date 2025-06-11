@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ageint Security DMSS Tutorial</title>
     <style>
         /* ===== CORE PHILOSOPHY: 8-POINT GRID SYSTEM & PREMIUM DESIGN ===== */
@@ -125,184 +125,6 @@
 
         body.scroll-lock {
             overflow: hidden;
-        }
-
-        /* ===== PASSWORD GATE STYLING ===== */
-        #password-gate {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            z-index: calc(var(--z-welcome) + 100);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-            visibility: visible;
-            transition: opacity var(--transition-slow), visibility var(--transition-slow);
-        }
-
-        #password-gate.is-hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .password-content {
-            background: var(--bg-primary);
-            border-radius: var(--border-radius-2xl);
-            padding: var(--space-6xl) var(--space-5xl);
-            box-shadow: var(--shadow-strong);
-            text-align: center;
-            max-width: 480px;
-            width: 95%;
-            border: 1px solid var(--border-gray);
-            transform: scale(0.9);
-            animation: passwordEntrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-
-        @keyframes passwordEntrance {
-            to {
-                transform: scale(1);
-            }
-        }
-
-        .lock-icon {
-            color: var(--accent-color);
-            margin-bottom: var(--space-lg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .password-title {
-            font-size: var(--text-4xl);
-            font-weight: 900;
-            color: var(--accent-color);
-            margin-bottom: var(--space-md);
-            line-height: 1.2;
-        }
-
-        .password-subtitle {
-            font-size: var(--text-lg);
-            color: var(--text-secondary);
-            margin-bottom: var(--space-4xl);
-            line-height: 1.5;
-        }
-
-        .password-form {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-        }
-
-        .password-input-container {
-            position: relative;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: var(--space-lg) var(--space-xl);
-            font-size: var(--text-lg);
-            font-weight: 500;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border-gray);
-            border-radius: var(--border-radius-lg);
-            color: var(--text-primary);
-            transition: var(--transition-base);
-            outline: none;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-
-        .password-input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.1);
-            background: var(--bg-primary);
-        }
-
-        .password-input::placeholder {
-            color: var(--text-secondary);
-            letter-spacing: normal;
-        }
-
-        .password-submit {
-            padding: var(--space-lg) var(--space-2xl);
-            font-size: var(--text-lg);
-            font-weight: 700;
-            background: var(--accent-color);
-            color: var(--accent-text-color);
-            border: none;
-            border-radius: var(--border-radius-lg);
-            cursor: pointer;
-            transition: var(--transition-base);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-sm);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .password-submit:hover {
-            background: var(--accent-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .password-submit:active {
-            transform: translateY(0);
-        }
-
-        .password-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .password-error {
-            color: #E53E3E;
-            font-size: var(--text-sm);
-            font-weight: 600;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: opacity var(--transition-base), visibility var(--transition-base), transform var(--transition-base);
-            text-align: center;
-            background: rgba(229, 62, 62, 0.1);
-            padding: var(--space-sm) var(--space-md);
-            border-radius: var(--border-radius);
-            border: 1px solid rgba(229, 62, 62, 0.2);
-        }
-
-        .password-error.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        /* Loading state for submit button */
-        .password-submit.loading {
-            pointer-events: none;
-        }
-
-        .password-submit.loading::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 2px solid transparent;
-            border-top-color: currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
         }
 
         /* ===== WELCOME EXPERIENCE STYLING ===== */
@@ -466,7 +288,7 @@
             background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 90%, black) 100%);
             color: var(--accent-text-color);
             padding: var(--space-sm) var(--space-lg);
-            z-index: 10000 !important;
+            z-index: var(--z-disclaimer);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -834,252 +656,30 @@
             color: var(--group-box-text);
         }
 
-        /* ===== MOBILE UX OVERHAUL - PREDICTABLE LAYOUT & SCROLLING ===== */
+        /* ===== MOBILE OPTIMIZATION - COMPREHENSIVE REWORK ===== */
         @media (max-width: 768px) {
-            /* iOS Safari Viewport Fix */
-            html {
-                height: -webkit-fill-available;
-            }
-
-            /* STEP 1: Calculate Fixed Element Heights */
-            /* Disclaimer bar: ~44px, Header: ~80px = Total: 124px */
+            /* Step 1: Demolish Old Layout - Remove all problematic positioning */
             
-            /* Step 1: The <body> Flexbox Container (The Foundation) */
+            /* Step 2: Implement New Body Flexbox Container */
             body {
                 display: flex;
                 flex-direction: column;
-                height: 100vh; /* Make the body exactly the height of the screen */
+                height: 100vh;
                 margin: 0;
-                overflow: hidden; /* Prevents the whole page from "bouncing" */
-            }
-
-            /* Step 2: The Header and Footer (The Fixed Elements) */
-            #disclaimer-bar, /* The wrapper for your header/disclaimer */
-            .fixed-header,
-            .wizard-navigation {  /* The bar with 'Prev' and 'Next' buttons */
-                flex-shrink: 0;
-                position: relative; /* Must be part of the flex flow */
-            }
-
-            #disclaimer-bar {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-
-            .fixed-header {
-                padding: 16px;
-            }
-
-            body.theme-dark .fixed-header {
-                background: var(--bg-primary);
-            }
-
-            /* Step 3: The Wizard Container (The Flexible Content Area) */
-            #wizard-container {
-                flex-grow: 1; /* This is the key: it expands to fill all available space */
-                position: relative; /* CRITICAL: This makes it the positioning parent for the slides */
                 overflow: hidden;
             }
 
-            /* Step 4: The Individual Wizard Slides (The Final, Correct Implementation) */
-            #wizard-container > section {
-                /* This forces all slides to stack in the exact same spot */
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-
-                /* This handles the internal scrolling for long content */
-                overflow-y: auto;
-                padding: 24px; /* Give content some breathing room */
-                box-sizing: border-box;
-
-                /* This is the visibility and animation logic from our desktop version */
-                opacity: 0;
-                visibility: hidden;
-                transform: rotateY(-90deg); /* Or whatever your desired animation is */
-                transition: transform 0.6s ease, opacity 0.6s ease;
-                backface-visibility: hidden;
-
-                /* Mobile styling */
-                background: var(--bg-primary);
-                border-radius: 0; /* Full screen on mobile */
-            }
-
-            /* And finally, the rule to make the one active slide visible */
-            #wizard-container > section.active-step {
-                opacity: 1;
-                visibility: visible;
-                transform: rotateY(0deg);
-                z-index: 10;
-            }
-
-            /* Ensure scroll position resets happen at the slide level */
-            .wizard-step.active {
-                overflow-y: auto;
-            }
-
-            /* Mobile Typography - Significantly Smaller */
-            #wizard-container h1 {
-                font-size: 24px;
-                margin-bottom: 16px;
-                line-height: 1.2;
-            }
-
-            #wizard-container h2 {
-                font-size: 20px;
-                margin-bottom: 12px;
-            }
-
-            #wizard-container h3 {
-                font-size: 18px;
-                margin-bottom: 8px;
-            }
-
-            #wizard-container p,
-            #wizard-container li {
-                font-size: 14px;
-                line-height: 1.4;
-                margin-bottom: 12px;
-            }
-
-            #wizard-container .group-box {
-                padding: 12px;
-                margin: 12px 0;
-                border-radius: 8px;
-            }
-
-            #wizard-container .group-box h3 {
-                font-size: 16px;
-                margin-bottom: 8px;
-            }
-
-            /* Mobile Button Styles */
-            .wizard-nav-button {
-                min-height: 44px; /* iOS touch target requirement */
-                font-size: 16px;
-                padding: 12px 20px;
-                border-radius: 8px;
-            }
-
-            /* Navigation Bar - Mobile Layout */
+            /* Step 3: Define Fixed-Size Header and Footer Elements */
+            .fixed-header,
+            #disclaimer-bar,
             .wizard-navigation {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                transform: none;
-                width: 100%;
-                padding: 16px;
-                background: var(--bg-primary);
-                border-top: 1px solid var(--border-gray);
                 flex-shrink: 0;
+                position: relative;
             }
 
-            body.theme-dark .wizard-navigation {
-                background: var(--bg-primary);
-                border-top: 1px solid var(--border-gray);
-            }
-
-            /* Disable swipe navigation on mobile to prevent scrolling conflicts */
-            .wizard-step {
-                touch-action: pan-y; /* Only allow vertical scrolling */
-            }
-
-            /* TASK 2: ADAPTIVE TYPOGRAPHY & SPACING - MOBILE-FIRST HIERARCHY */
-            
-            /* Hero Section Typography */
-            .hero-title {
-                font-size: var(--text-3xl);
-                margin-bottom: 16px;
-                line-height: 1.2;
-            }
-
-            .hero-subtitle {
-                font-size: var(--text-base);
-                margin-bottom: 24px;
-                line-height: 1.5;
-            }
-
-            /* Content Section Typography */
-            .content-section h2 {
-                font-size: var(--text-2xl);
-                margin-bottom: 16px;
-                line-height: 1.3;
-            }
-
-            .content-section p {
-                font-size: var(--text-base);
-                margin-bottom: 16px;
-                line-height: 1.6;
-            }
-
-            .content-section li {
-                font-size: var(--text-base);
-                margin-bottom: 8px;
-                line-height: 1.5;
-            }
-
-            /* CONTENT SECTIONS - MOBILE FLOW LAYOUT */
-            .content-section {
-                padding: 20px;
-                margin: 0;
-                width: 100%;
-                align-self: stretch;
-                flex-grow: 1;
-                display: flex;
-                flex-direction: column;
-            }
-
-            /* Hero sections - proper mobile layout */
-            .hero-section {
-                justify-content: center;
-                text-align: center;
-                padding: 40px 20px;
-                min-height: auto;
-            }
-
-            /* Footer sections - proper mobile layout */
-            .footer-section {
-                justify-content: center;
-                text-align: center;
-                padding: 40px 20px;
-                min-height: auto;
-            }
-
-            .info-box {
-                padding: 16px;
-                margin: 16px 0;
-                font-size: var(--text-sm);
-            }
-
-            .note-block {
-                padding: 16px;
-                margin: 16px 0;
-                font-size: var(--text-sm);
-            }
-
-            .content-section ol,
-            .content-section ul {
-                margin-bottom: 16px;
-                padding-left: 20px;
-            }
-
-            /* Footer Section Mobile Optimization */
-            .completion-content h2 {
-                font-size: var(--text-3xl);
-                margin-bottom: 16px;
-            }
-
-            .contact-info {
-                margin-top: 24px;
-                padding: 16px;
-                font-size: var(--text-sm);
-            }
-
-            /* Header Optimization */
             .fixed-header {
                 padding: 12px 16px;
+                z-index: var(--z-header);
             }
 
             .header-content {
@@ -1087,192 +687,201 @@
                 gap: 8px;
             }
 
-            .logo {
-                font-size: var(--text-lg);
+            /* Step 4: Implement Flexible Main Content Area - THE CRITICAL FIX */
+            .main-container {
+                flex-grow: 1;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
             }
 
-            .brand-label {
-                font-size: var(--text-xs);
+            /* Step 5: Transform Wizard Container for Mobile Flow */
+            #wizard-container {
+                flex-grow: 1;
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                transform: none !important;
+                width: 100% !important;
+                height: 100% !important;
+                margin: 0 !important;
+                display: grid;
+                place-items: center;
+                overflow: hidden;
+                perspective: 1500px;
             }
 
-            /* Navigation Bar Styling */
+            /* Step 6: Style Individual Wizard Slides for Mobile */
+            #wizard-container > section {
+                position: absolute;
+                width: 90%;
+                height: 90%;
+                max-width: 500px;
+                max-height: 95%;
+                overflow-y: auto;
+                padding: 24px;
+                
+                /* Reset desktop transforms for mobile-first approach */
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotateY(-90deg);
+                
+                /* Maintain existing animation system */
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+                backface-visibility: hidden;
+                
+                /* Mobile-optimized content layout */
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: stretch;
+                box-sizing: border-box;
+            }
+
+            #wizard-container > section.active-step {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translate(-50%, -50%) rotateY(0deg);
+                z-index: 10;
+            }
+
+            /* Mobile-optimized content sections */
+            .content-section {
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                text-align: left;
+                border-radius: var(--border-radius-xl);
+                box-shadow: var(--shadow-medium);
+                border: 1px solid var(--border-gray);
+                margin: 0;
+                padding: var(--space-lg);
+                height: 100%;
+                overflow-y: auto;
+            }
+
+            .hero-section {
+                background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 80%, black) 100%);
+                color: var(--accent-text-color);
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+                padding: var(--space-lg);
+            }
+
+            .hero-title {
+                font-size: var(--text-3xl);
+                line-height: 1.2;
+                margin-bottom: var(--space-md);
+            }
+
+            .hero-subtitle {
+                font-size: var(--text-base);
+                line-height: 1.5;
+                margin-bottom: var(--space-lg);
+            }
+
+            /* Navigation bar mobile optimization */
             .wizard-navigation {
-                padding: 16px 12px;
-                background: var(--bg-primary);
+                padding: var(--space-md);
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
                 border-top: 1px solid var(--border-gray);
+                position: relative;
+                bottom: auto;
+                left: auto;
+                right: auto;
+                z-index: var(--z-navigation);
             }
-
-            body.theme-dark .wizard-navigation {
-                background: var(--bg-primary);
-            }
-
-            /* Height rules are handled in main wizard container section above */
 
             .nav-btn {
-                min-width: 80px;
-                padding: 12px 16px;
-                font-size: var(--text-sm);
-                min-height: 44px;
-            }
-
-            .progress-indicator {
-                font-size: var(--text-xs);
                 min-width: 100px;
+                padding: var(--space-md) var(--space-lg);
+                font-size: var(--text-base);
+                /* Larger touch targets for mobile */
+                min-height: 48px;
             }
 
-            /* Welcome Screen Mobile Optimization */
+            /* Welcome screen mobile optimization */
             .welcome-content {
-                padding: 32px 20px;
+                padding: var(--space-4xl) var(--space-lg);
                 max-width: 95%;
-                max-height: 80vh;
-                overflow-y: auto;
-                margin: 0;
-            }
-
-            #welcome-modal {
-                align-items: center !important;
-                justify-content: center !important;
-                padding: 20px;
+                margin: var(--space-md);
             }
 
             .welcome-title {
                 font-size: var(--text-3xl);
-                margin-bottom: 12px;
-            }
-
-            .welcome-subtitle {
-                font-size: var(--text-base);
-                margin-bottom: 32px;
-            }
-
-            .section-title {
-                font-size: var(--text-lg);
-                margin-bottom: 16px;
             }
 
             .theme-toggle-container {
                 flex-direction: column;
-                gap: 8px;
-                margin-bottom: 32px;
-            }
-
-            .theme-option {
-                padding: 12px 16px;
-                font-size: var(--text-sm);
+                gap: var(--space-xs);
             }
 
             .color-swatches {
-                gap: 12px;
-                margin-bottom: 32px;
+                gap: var(--space-xs);
             }
 
             .color-swatch {
-                width: 32px;
-                height: 32px;
-            }
-
-            /* Password Gate Mobile Optimization */
-            .password-content {
-                padding: 32px 24px;
-                max-width: 95%;
-                max-height: 80vh;
-                overflow-y: auto;
-                margin: 0;
-            }
-
-            #password-gate {
-                align-items: center !important;
-                justify-content: center !important;
-                padding: 20px;
-            }
-
-            .password-title {
-                font-size: var(--text-3xl);
-                margin-bottom: 12px;
-            }
-
-            .password-subtitle {
-                font-size: var(--text-base);
-                margin-bottom: 32px;
-            }
-
-            .password-input {
-                padding: 16px 20px;
-                font-size: var(--text-base);
-            }
-
-            .password-submit {
-                padding: 16px 24px;
-                font-size: var(--text-base);
-            }
-
-            /* Mobile-Specific Improvements */
-            .main-container {
-                /* NEUTRALIZED: Mobile layout interference removed */
-            }
-
-            /* Ensure proper touch targets */
-            button, .nav-btn, .theme-option, .color-swatch {
-                min-height: 44px;
+                width: var(--space-lg);
+                height: var(--space-lg);
+                /* Larger touch targets */
                 min-width: 44px;
+                min-height: 44px;
             }
 
-            /* Optimize code blocks for mobile */
-            .content-section code {
-                font-size: 0.85em;
-                padding: 3px 6px;
-                word-break: break-word;
+            /* Disclaimer bar mobile optimization */
+            #disclaimer-bar {
+                position: relative;
+                padding: var(--space-sm) var(--space-md);
+                font-size: var(--text-sm);
             }
 
-            /* Mobile scrolling improvements */
-            * {
-                -webkit-overflow-scrolling: touch;
-            }
-        }
-
-        /* ===== iOS SPECIFIC FIXES - ADDITIONAL VIEWPORT SUPPORT ===== */
-        @media (max-width: 480px) {
-            /* Extra small devices - more conservative sizing */
-            #wizard-container {
-                height: calc(100vh - 170px) !important; /* More conservative sizing */
-                min-height: calc(100vh - 170px) !important;
+            /* Touch-friendly button sizes */
+            .theme-option {
+                min-height: 48px;
+                padding: var(--space-md);
             }
 
-            body.disclaimer-hidden #wizard-container {
-                height: calc(100vh - 130px) !important;
-                min-height: calc(100vh - 130px) !important;
+            /* Ensure proper spacing for mobile content */
+            .content-section h2 {
+                font-size: var(--text-2xl);
+                margin-bottom: var(--space-md);
             }
 
-            #wizard-container > section {
-                padding: 12px;
+            .content-section p {
+                margin-bottom: var(--space-sm);
+                line-height: 1.6;
             }
 
-            #wizard-container h1 {
-                font-size: 22px;
+            .info-box,
+            .note-block {
+                margin: var(--space-md) 0;
+                padding: var(--space-md);
             }
 
-            #wizard-container p,
-            #wizard-container li {
-                font-size: 13px;
-            }
-        }
-
-        /* ===== iOS SAFE AREA SUPPORT ===== */
-        @supports (padding: env(safe-area-inset-top)) {
-            .fixed-header {
-                padding-top: max(12px, env(safe-area-inset-top));
+            /* Footer section mobile optimization */
+            .footer-section {
+                background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 80%, black) 100%);
+                color: var(--accent-text-color);
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+                padding: var(--space-lg);
             }
 
-            .wizard-navigation {
-                padding-bottom: max(16px, env(safe-area-inset-bottom));
+            .completion-content h2 {
+                font-size: var(--text-3xl);
+                margin-bottom: var(--space-lg);
             }
 
-            #password-gate,
-            #welcome-modal {
-                padding-top: env(safe-area-inset-top);
-                padding-bottom: env(safe-area-inset-bottom);
-                padding-left: env(safe-area-inset-left);
-                padding-right: env(safe-area-inset-right);
+            .contact-info {
+                margin-top: var(--space-lg);
+                padding: var(--space-md);
             }
         }
 
@@ -1313,47 +922,8 @@
     </style>
 </head>
 <body class="scroll-lock">
-    <!-- ===== SECURE PASSWORD GATE (THE AUTHENTICATION LAYER) ===== -->
-    <div id="password-gate">
-        <div class="password-content">
-            <div class="lock-icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <circle cx="12" cy="16" r="1"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-            </div>
-            <h1 class="password-title">Authentication Required</h1>
-            <p class="password-subtitle">Please enter the password to access the DMSS Tutorial.</p>
-            
-            <form id="password-form" class="password-form">
-                <div class="password-input-container">
-                    <input 
-                        type="password" 
-                        id="password-input" 
-                        class="password-input"
-                        placeholder="Enter password"
-                        autocomplete="current-password"
-                        required
-                    >
-                </div>
-                <button type="submit" class="password-submit" id="password-submit">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                        <polyline points="10,17 15,12 10,7"/>
-                        <line x1="15" y1="12" x2="3" y2="12"/>
-                    </svg>
-                    Unlock Tutorial
-                </button>
-                <div class="password-error" id="password-error">
-                    Incorrect password. Please try again.
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- ===== WELCOME EXPERIENCE (THE GRAND ENTRY) ===== -->
-    <div id="welcome-modal" class="is-hidden">
+    <div id="welcome-modal">
         <div class="welcome-content">
             <h1 class="welcome-title">Ageint Security DMSS Tutorial</h1>
             <p class="welcome-subtitle">Personalize your tutorial experience.</p>
@@ -1605,85 +1175,6 @@
         </main>
     </div>
     <script>
-        // ===== SECURITY LAYER - PASSWORD AUTHENTICATION ===== //
-        const CORRECT_HASH = '3c657c75225c56fce40360d1cab79a2c1a6bbc0eb900b0e267e877db4236ceff';
-        
-        // SHA-256 hashing function using SubtleCrypto API
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
-
-        // Password validation and application unlock
-        async function validatePassword(password) {
-            try {
-                const hashedInput = await sha256(password);
-                return hashedInput === CORRECT_HASH;
-            } catch (error) {
-                console.error('Password validation error:', error);
-                return false;
-            }
-        }
-
-        // Password gate management
-        function showPasswordError() {
-            const errorElement = document.getElementById('password-error');
-            const passwordInput = document.getElementById('password-input');
-            errorElement.classList.add('show');
-            passwordInput.value = '';
-            passwordInput.focus();
-            
-            // Hide error after 4 seconds
-            setTimeout(() => {
-                errorElement.classList.remove('show');
-            }, 4000);
-        }
-
-        function hidePasswordGate() {
-            const passwordGate = document.getElementById('password-gate');
-            passwordGate.classList.add('is-hidden');
-            
-            // After password gate is hidden, show welcome modal
-            setTimeout(() => {
-                const welcomeModal = document.getElementById('welcome-modal');
-                welcomeModal.classList.remove('is-hidden');
-            }, 500);
-        }
-
-        // Password form submission handler
-        async function handlePasswordSubmit(e) {
-            e.preventDefault();
-            
-            const passwordInput = document.getElementById('password-input');
-            const submitButton = document.getElementById('password-submit');
-            const password = passwordInput.value;
-            
-            if (!password) {
-                passwordInput.focus();
-                return;
-            }
-            
-            // Show loading state
-            submitButton.classList.add('loading');
-            submitButton.disabled = true;
-            
-            // Validate password
-            const isValid = await validatePassword(password);
-            
-            // Remove loading state
-            submitButton.classList.remove('loading');
-            submitButton.disabled = false;
-            
-            if (isValid) {
-                hidePasswordGate();
-            } else {
-                showPasswordError();
-            }
-        }
-
         // ===== WIZARD ENGINE: CLEAN, ROBUST JAVASCRIPT ===== //
         
         // Global Variables
@@ -1803,7 +1294,7 @@
             // Add active-step to target slide
             wizardSteps[index].classList.add('active-step');
             
-            // CRITICAL MOBILE FIX: Reset scroll position to top of new slide
+            // Reset scroll position to top for mobile optimization
             wizardSteps[index].scrollTop = 0;
             
             // Update current step
@@ -1873,22 +1364,19 @@
             }
         });
 
-        // Touch gestures - DISABLED ON MOBILE to prevent scrolling conflicts
-        // Only enable swipe navigation on larger screens (desktop/tablet)
-        function isMobileDevice() {
-            return window.innerWidth <= 768;
+        // Touch gestures for mobile - DISABLED to prevent conflicts with vertical scrolling
+        // Mobile navigation is now button-only for optimal UX
+        let startX = null;
+        
+        // Only enable swipe navigation on desktop (screens wider than 768px)
+        function handleTouchStart(e) {
+            if (window.innerWidth > 768) {
+                startX = e.touches[0].clientX;
+            }
         }
 
-        let startX = null;
-        document.addEventListener('touchstart', (e) => {
-            // DISABLE on mobile - swipes interfere with vertical scrolling
-            if (isMobileDevice()) return;
-            startX = e.touches[0].clientX;
-        }, { passive: true });
-
-        document.addEventListener('touchend', (e) => {
-            // DISABLE on mobile - swipes interfere with vertical scrolling
-            if (isMobileDevice() || !startX) return;
+        function handleTouchEnd(e) {
+            if (!startX || window.innerWidth <= 768) return;
             
             const endX = e.changedTouches[0].clientX;
             const diffX = startX - endX;
@@ -1902,45 +1390,19 @@
             }
             
             startX = null;
-        }, { passive: true });
-
-        // ===== PASSWORD GATE INITIALIZATION ===== //
-        function setupPasswordGate() {
-            const passwordForm = document.getElementById('password-form');
-            const passwordInput = document.getElementById('password-input');
-            
-            if (passwordForm) {
-                passwordForm.addEventListener('submit', handlePasswordSubmit);
-            }
-            
-            // Auto-focus password input
-            if (passwordInput) {
-                setTimeout(() => {
-                    passwordInput.focus();
-                }, 100);
-            }
-            
-            // Enter key handling
-            if (passwordInput) {
-                passwordInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handlePasswordSubmit(e);
-                    }
-                });
-            }
         }
 
-        // ===== INITIALIZATION - NEW FLOW WITH PASSWORD GATE ===== //
+        document.addEventListener('touchstart', handleTouchStart, { passive: true });
+        document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        // ===== INITIALIZATION ===== //
         document.addEventListener('DOMContentLoaded', () => {
-            setupPasswordGate();
             setupWelcomeScreen();
             setupDisclaimer();
         });
 
         // Initialize immediately if DOM is already loaded
         if (document.readyState !== 'loading') {
-            setupPasswordGate();
             setupWelcomeScreen();
             setupDisclaimer();
         }
